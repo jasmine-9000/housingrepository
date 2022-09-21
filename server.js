@@ -1,5 +1,6 @@
 const express = require('express');
 const https = require('https')
+const http = require('http')
 const fs = require('fs');
 const app = express();
 const mongoose = require('mongoose');
@@ -62,7 +63,7 @@ app.use('/', mainRoutes);
 app.use('/happyHome', happyHomeRoutes);
 app.use('/comment', commentRoutes);
 app.use('/maps', mapRoutes);
-
+/*
 // setup HTTPS listening...
 var cert = fs.readFileSync(__dirname + "/cert.pem");
 var key = fs.readFileSync(__dirname + '/key.pem');
@@ -70,11 +71,15 @@ var options = {
   key: key,
   cert: cert
 }
-
 app.get('/fuck', (req, res) => {
   res.send("now using https...")
 })
-var server = https.createServer(options, app);
+
+*/
+var options = {}
+
+
+var server = http.createServer(options, app);
 
 //Server Running
 server.listen(process.env.PORT, () => {
