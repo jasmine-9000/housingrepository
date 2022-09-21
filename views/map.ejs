@@ -1,0 +1,21 @@
+<%- include('partials/header') -%>
+<div class="container">
+    <div class="row">
+
+        <h1>Your potential new home!</h1>
+        <img src="/imgs/google-maps.jpeg">
+        <h1>Locations: </h1>
+        <ul>
+            <% for(let i = 0; i < locations.length; i++) { %> 
+
+                <li><a href="<%= locations[i].link %> "><%= locations[i].name %> @ <%= locations[i].address %> </a></li>
+            <% } %>
+        </ul>
+    </div>
+    <div class="row">
+        
+    </div>
+    
+</div>
+
+<%- include('partials/footer') -%>
