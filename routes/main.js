@@ -7,7 +7,7 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Main Routes - simplified for now
 router.get("/googlemapstest", (req, res) => {
-    res.render('googlemapstest');
+    res.render('googlemapstest', {googlemapsapikey: process.env.GOOGLEMAPS_API_KEY});
 })
 router.get("/", homeController.getIndex);
 router.get("/credits", homeController.getCredits);
