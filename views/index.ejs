@@ -41,9 +41,11 @@
     @keyframes preloader {
     100% { transform: scale(2); }
     }
+
+    
 </style>
 
-<main class="container">
+<main class="container mx-auto">
     <div class="row justify-content-around mt-5">
         <div class="loader" style="display:none">
             <span class="loader__element"></span>
@@ -53,11 +55,12 @@
         <img src="/imgs/google-maps.jpeg" style="display:none">
     </div>
 
-    <div class="row justify-content-around mt-5">
-        <a href="/maps" class="col-3 btn btn-primary">Find your new home</a>
-        <a href="/login" class="col-3 btn btn-primary">Add a home</a>
+    <div class="row">
+        <a href="/maps" class="text-lg btn btn-blue">Find your new home</a>
+        <a href="/login" class="btn btn-blue">Add a home</a>
     </div>
 </main>
     
+
 
 <%- include('partials/footer') -%>
