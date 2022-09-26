@@ -1,16 +1,37 @@
 <%- include('partials/header') -%>
-<div class="container">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-    <h1>Your potential new home!</h1>
-    <img src="/imgs/google-maps.jpeg">
-    <h1 class="meow">Locations: </h1>
+    <style>
+                /* Set the size of the div element that contains the map */
+        #map {
+        height: 400px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+        }
+
+    </style>
+<script src="/js/script.js"></script>
+<div class="container mx-auto">
+
+    <h1 class="text-3xl">Your potential new home!</h1>
+    
+    <!-- <img src="/imgs/google-maps.jpeg"> -->
+    <div id="map"></div>
+    <h1 class="text-xl">Locations: </h1>
     <ul >
         <% for(let i = 0; i < locations.length; i++) { %> 
 
-            <li><a class="housinglink" href="<%= locations[i].link %>" class="item"><%= locations[i].name %> @ <%= locations[i].address %> </a></li>
+            <li class="pt-8 pb-8 flex items-center border-solid border-2">
+                <div class="bg-pink-500 w-8 h-8 rounded-full"></div>
+                <a class=" p-8" href="<%= locations[i].link %>" class="item"><%= locations[i].name %> @ <%= locations[i].address %> </a>
+            </li>
         <% } %>
     </ul>
     
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= googlemapsapikey %>&callback=initMap&v=weekly"
+    defer
 
+  ></script>
 <%- include('partials/footer') -%>

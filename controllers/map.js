@@ -17,7 +17,7 @@ module.exports = {
             link: "/happyHome/6328f433a2a8335174b67c15"
         }
       ]; */
-      res.render("map.ejs", {locations: locations});
+      res.render("map.ejs", {locations: locations, googlemapsapikey: process.env.GOOGLEMAPS_API_KEY});
     }
   };
   
