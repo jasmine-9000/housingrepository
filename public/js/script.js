@@ -42,14 +42,11 @@ function initMap() {
         console.log(position);
         console.log(typeof position.lat)
         console.log(typeof position.lng)
-        markersArray[index] = new google.maps.Marker({
+        new google.maps.Marker({
             postition: position, 
             map: map,
             zIndex: index
         })
-    })
-    markersArray.forEach(marker => {
-        marker.setMap(map);
     })
     console.log(markersArray)
     
