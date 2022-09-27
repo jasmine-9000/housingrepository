@@ -1,75 +1,83 @@
 <%- include('partials/header') -%>
-<div class="container">
+<div class="container mx-auto">
   <div class="row mt-5">
       <div class="col-6">
-          <div>
-              <p><strong>User Name</strong>: <%= user.userName %></p>
-              <p><strong>Email</strong>: <%= user.email %></p>
-              <a href="/logout" class="col-3 btn btn-primary">Logout</a>
+          <div class="dark:text-white">
+              <p class="text-xl"><strong class="font-bold">User Name</strong>: <%= user.userName %></p>
+              <p class="text-xl mb-5"><strong>Email</strong>: <%= user.email %></p>
+              <a href="/logout" class="btn btn-blue">Logout</a>
           </div>
           <div class="mt-5">
-            <h2>Add a Home</h2>
+            <h2 class="dark:text-white text-2xl">Add a Home</h2>
             <form action="/happyHome/createHappyHome" enctype="multipart/form-data" method="POST">
               <div class="mb-3">
                   <label for="name" class="form-label">Name of Home*</label>
                   <input type="text" class="form-control" id="name" name="name" placeholder="Foster's Home for Imaginary Friends">
               </div>
               <div class="mb-3">
-                <label for="address" class="form-label">Address*</label>
+                <label for="address" class="form-label">Display Address*</label>
                 <input type="text" class="form-control" id="address" name="address" placeholder="1123 Wilson Way">
+              </div>
+              <div class="mb-3">
+                <label for="latitude" class="form-label">Latitude</label>
+                <input type="text" class="form-control" id="latitude" name="longitude"> 
+              </div>
+              <div class="mb-3">
+                <label for="longitude" class="form-label">Longitude</label>
+                <input type="text" class="form-control" id="longitude" name="longitude"> 
               </div>
               <div class="mb-3">
                 <label for="imgUpload" class="form-label">Image</label>
                 <input type="file" class="form-control" id="imageUpload" name="file">
               </div>
-              <h3>Options</h3>
+              <h3 class="dark:text-white text-2xl mb-2">Options</h3>
               <div class="mb-3">
                 <input type="checkbox" class="form-check-input" value="" id="autismfriendly" name="autismfriendly">
                 <label for="autismfriendly" class="form-label">Autism Friendly</label>
                 
               </div>
               
-              <div class="mb-3">
+              <div class="mb-2">
                 <input type="checkbox" class="form-check-input" value="" id="dogfriendly" name="dogfriendly">
                 <label for="dogfriendly" class="form-label">Dog Friendly</label>
                 
               </div>
               
-              <div class="mb-3">
+              <div class="mb-2">
                 <input type="checkbox" class="form-check-input" value="" id="housingvouchers" name="housingvouchers">
                 <label for="housingvouchers" class="form-label">Takes Housing Vouchers</label>
                 
               </div>
 
               
-              <div class="mb-3">
+              <div class="mb-2">
                 <input type="checkbox" class="form-check-input" value="" id="affordablehousing" name="affordablehousing">
                 <label for="affordablehousing" class="form-label">Affordable Housing Units</label>
                 
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <input type="checkbox" class="form-check-input" value="" id="communitygarden" name="communitygarden">
                 <label for="communitygarden" class="form-label">Has a community garden?</label>
                 
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <input type="checkbox" class="form-check-input" value="" id="petsallowed" name="petsallowed">
                 <label for="petsallowed" class="form-label">Are pets allowed?</label>
                 
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <input type="checkbox" class="form-check-input" value="" id="videomonitoring" name="videomonitoring">
                 <label for="videomonitoring" class="form-label">Video Monitoring</label>
                 
               </div>
               
-              <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+              <button type="submit" class="btn btn-blue" value="Upload">Submit</button>
             </form>
           </div>
       </div>
-      <div class="col-6">
-        <h1>Your Submitted Homes:</h1>
-        <ul class="row list-unstyled">
+      <div class="dark:text-white col-6 mt-5">
+        <h1 class="text-xl">Your Submitted Homes:</h1>
+        <ul class="row list-unstyled mb-10">
         <% for(var i=0; i<happyHomes.length; i++) {%>
           <li class="col-6 justify-content-between mt-5">
             <a href="/happyHome/<%= happyHomes[i]._id%>">
@@ -80,7 +88,7 @@
           </li>
         <% } %>
         </ul>
-        <h2><a href="/maps">See all submitted homes</a>
+        <h2 class="mb-3"><a href="/maps" class="btn btn-blue">See all submitted homes</a>
       </div>  
     </div>
   </div>
