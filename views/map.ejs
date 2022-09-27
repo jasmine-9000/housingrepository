@@ -13,7 +13,9 @@
     </style>
 <script>
 // create an array with all locations, attempt to pass it to script.js
-const locationsArray = [
+
+function getLocationsArray() { 
+    return [
     <% for(let i = 0; i < locations.length; i++) { %>
         {
           longitude: <%= locations[i].longitude %>,
@@ -24,7 +26,8 @@ const locationsArray = [
         <% } %>
         
     <% } %>
-]
+    ] }
+
 </script>
 
 <script src="/js/script.js"></script>

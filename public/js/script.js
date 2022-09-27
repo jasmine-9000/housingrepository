@@ -7,16 +7,38 @@ function initMap() {
         zoom: 4,
         center: { lat: 37.3161984, lng: -122.0050944 },
     });
-    console.log(locationsArray)
+    const coolLocations = [
+        {
+            latitude: 37.41524232563237, 
+            longitude: -122.06025956872777,
+            title: "NASA"
+        }, 
+        {
+            latitude: 38.89547583307576, 
+            longitude: -77.05152190382638,
+            title: 'CIA'
+        },
+        {
+            latitude: 38.895818133569385, 
+            longitude: -77.02507341362892,
+            title: "FBI"
+        },
+        {
+            latitude: 39.10883820540256, 
+            longitude: -76.77134283081112,
+            title: "NSA"
+        }
+    ]
+    let locationsArray = getLocationsArray();
     /*google.maps.LatLngLiteral*/
     let markersArray = []
-    locationsArray.forEach((location, index) => {
+    coolLocations.forEach((location, index) => {
         console.log("Location #", index);
         console.log("Position being marked...: ")
-        const position = new google.maps.LatLng(Number(location.latitude),Number(location.longitude))/* {
+        const position =  {
             lat: Number(location.latitude),
             lng: Number(location.longitude)
-        } */
+        } 
         console.log(position);
         console.log(typeof position.lat)
         console.log(typeof position.lng)
@@ -38,7 +60,7 @@ function initMap() {
     GeoloactionObj.getCurrentPosition(function(geolocationposition) {
         console.log('hello');
         console.log(geolocationposition);
-        const marker2 = new google.maps.Marker({
+        let marker2 = new google.maps.Marker({
             position: {
                 lat: geolocationposition.coords.latitude,
                 lng: geolocationposition.coords.longitude
@@ -46,6 +68,13 @@ function initMap() {
             map: map,
             title: "My Location"
         });
+        let infoWindow = new google.maps.InfoWindow({
+            content: '<h1>This is your location...</h1>'
+
+        })
+        marker2.addListener('click', function() {
+            infoWindow.open(map, marker2);
+        })
     })
 
     // The marker, positioned at Uluru
