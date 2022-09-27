@@ -18,8 +18,8 @@ function getLocationsArray() {
     return [
     <% for(let i = 0; i < locations.length; i++) { %>
         {
-          longitude: <%= locations[i].longitude %>,
-          latitude: <%= locations[i].latitude %>
+          longitude: '<%= locations[i].longitude %>',
+          latitude: '<%= locations[i].latitude %>'
         }
         <% if(i !== locations.length - 1) { %>
             ,
