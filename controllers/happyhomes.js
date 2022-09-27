@@ -59,6 +59,8 @@ module.exports = {
           image: result.secure_url,
           cloudinaryId: result.public_id,
           address: req.body.address,
+          latitude: req.body.latitude,
+          longitude: req.body.longitude,
           likes: 0,
           user: req.user.id,
           options: {
@@ -77,6 +79,8 @@ module.exports = {
             image: "",
             cloudinaryId: "",
             address: req.body.address,
+            latitude: req.body.latitude,
+            longitude: req.body.longitude,
             likes: 0,
             user: req.user.id,
             options: {

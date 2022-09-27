@@ -8,6 +8,7 @@ module.exports = {
         base += "noauth/";
       }
       locations.forEach(location => {
+        console.log("Location lat and long: ", location)
         location.link = base + location._id;
       })
       /*const locations = [

@@ -17,6 +17,12 @@ const HomeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  latitude: {
+    type: mongoose.Schema.Types.Decimal128,
+  },
+  longitude: {
+    type: mongoose.Schema.Types.Decimal128
+  },
   likes: {
     type: Number,
     required: true,
