@@ -1,7 +1,7 @@
 const cloudinary = require('../middleware/cloudinary');
 const HappyHome = require('../models/HappyHome');
 const Comment = require('../models/Comment');
-
+HappyHome.createIndexes({location: "2dsphere"})
 module.exports = {
   getProfile: async (req, res) => {
     try {
@@ -19,7 +19,7 @@ module.exports = {
         .sort({ createdAt: 'desc' })
         .lean();
         console.log(comments);
-      
+        
       res.render('happyhome.ejs', {
         happyhome: happyhome,
         user: req.user,
@@ -33,6 +33,7 @@ module.exports = {
   getHappyHomeNoAuth: async (req, res) => {
     try {
       const happyhome = await HappyHome.findById(req.params.id);
+      
       const comments = await Comment.find({ happyhome: req.params.id })
         .populate('user', 'userName')
         .sort({ createdAt: 'desc' })
@@ -50,7 +51,7 @@ module.exports = {
   createHappyHome: async (req, res) => {
     try {
       if(req.file) {
-
+        
         // Upload image to cloudinary
         const result = await cloudinary.uploader.upload(req.file.path);
         
@@ -59,8 +60,17 @@ module.exports = {
           image: result.secure_url,
           cloudinaryId: result.public_id,
           address: req.body.address,
+          location: {
+            type: 'Point',
+            coordinates: [
+              req.body.latitude,
+              req.body.longitude
+            ]
+          },
+          /*
           latitude: req.body.latitude,
           longitude: req.body.longitude,
+          */
           likes: 0,
           user: req.user.id,
           options: {
@@ -74,13 +84,27 @@ module.exports = {
           }
         })
       } else {
+          console.log("No image provided...");
+          console.log([
+            req.body.latitude,
+            req.body.longitude
+          ])
           await HappyHome.create({
             name: req.body.name,
             image: "",
             cloudinaryId: "",
             address: req.body.address,
+            /*
             latitude: req.body.latitude,
             longitude: req.body.longitude,
+            */
+            location: {
+              type: 'Point',
+              coordinates: [
+                req.body.latitude,
+                req.body.longitude
+              ]
+            },
             likes: 0,
             user: req.user.id,
             options: {
@@ -98,6 +122,7 @@ module.exports = {
       res.redirect('/profile');
     } catch (err) {
       console.log(err);
+      res.send("Error handling form...")
     }
   },
   likeHappyHome: async (req, res) => {
@@ -116,13 +141,17 @@ module.exports = {
     }
   },
   deleteHappyHome: async (req, res) => {
+    console.log("meow")
+    const fetchID = req.params.id
+      console.log(fetchID);
     try {
+      
       // Find post by id
-      let post = await HappyHome.findById({ _id: req.params.id });
+      let post = await HappyHome.findById({ _id: fetchID });
       // Delete image from cloudinary
       await cloudinary.uploader.destroy(post.cloudinaryId);
       // Delete post from db
-      await HappyHome.remove({ _id: req.params.id });
+      await HappyHome.remove({ _id: fetchID });
       console.log('Deleted Post');
       res.redirect('/profile');
     } catch (err) {

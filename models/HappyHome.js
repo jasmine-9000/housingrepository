@@ -17,12 +17,25 @@ const HomeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  location: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+      index: '2dsphere'
+    }
+  },
+  /*
   latitude: {
     type: mongoose.Schema.Types.Decimal128,
   },
   longitude: {
     type: mongoose.Schema.Types.Decimal128
-  },
+  }, */
   likes: {
     type: Number,
     required: true,

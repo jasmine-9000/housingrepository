@@ -1,8 +1,8 @@
 <%- include('partials/header') -%>
-<div class="container">
-  <div class="row justify-content-center mt-5">
+<div class="container mx-auto">
+  <div class="dark:text-white row justify-content-center mt-5">
     <div class="col-6">
-      <h2 class="text-xl"><%= happyhome.name %></h2>
+      <h2 class="text-3xl"><%= happyhome.name %></h2>
       <img class="img-fluid" src="<%= happyhome.image%>" />
       <div class="row justify-content-between">
         <form
@@ -10,18 +10,22 @@
           action="/happyHome/likeHappyHome/<%= happyhome.id %>?_method=PUT"
           method="POST"
         >
-          <button class="btn btn-primary fa fa-heart" type="submit"></button>
+          <button class="btn btn-blue fa fa-heart" type="submit">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></button>
         </form>
         <h3 class="col-3">Likes: <%= happyhome.likes %></h3>
+
+        <!-- only render delete button if user is the creator.-->
         <%if(happyhome.user == user.id){ %>
         <form
           action="/happyHome/deleteHappyHome/<%= happyhome.id %>?_method=DELETE"
           method="POST"
           class="col-3"
         >
-          <button class="btn btn-primary fa fa-trash" type="submit"></button>
+          <button class="btn btn-blue fa fa-trash" type="submit">DELETE</button>
         </form>
         <%}%>
+
       </div>
     </div>
     <div class="col-3 mt-5">
@@ -29,7 +33,8 @@
     </div>
     <div>
       <div class="mt-5">
-        <h2>Add a comment</h2>
+        <h2 class="text-2xl">Add a comment</h2>
+        <!-- comment form-->
         <form action="/comment/add/<%=happyhome._id%>" method="POST">
           <div class="mb-3">
             <label for="comment" class="form-label">Comment</label>
@@ -40,28 +45,36 @@
               name="comment"
             />
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-blue">Submit</button>
         </form>
       </div>
       <h1>Current user: <%= user.userName %></h1>
       <ul>
         <% for( let i = 0; i < comments.length; i++ ) { %>
-          <li><%= comments[i].comment %> left by <%= comments[i].user.userName %></li>
-          <% if (comments[i].user == user.id)  { %>
-            <% /* match value but not type. they are of different types. */ %> 
-          <form
-            action="/comment/delete/<%= comments[i]._id %>?_method=DELETE&happyhomeid=<%= happyhome._id %> "
-            method="POST"
-          >
-            <button type="submit" class="btn btn-primary fa fa-trash"></button>
-          </form>
-          <% } %>
+          <li>
+            <span class="text-large break-all"><%= comments[i].comment %></span>
+            <br>
+            <div class="meta">
+            <span class="text-xs">left by <%= comments[i].user.userName %>
+              <!-- only display delete button if comment creator is current user. -->
+              <% if (String(comments[i].user._id) === String(user._id))  { %>
+               <% /* match value but not type. they are of different types. */ %> 
+              <form
+                action="/comment/delete/<%= comments[i]._id %>?_method=DELETE&happyhomeid=<%= happyhome._id %> "
+                method="POST"
+                class="w-8 h-8 inline"
+              > <!-- forms display as block by default.-->
+                <button type="submit" style="display:inline" class="btn btn-blue fa fa-trash inline"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z"></path></svg></button>
+              </form>
+              <% } %>
+            </span>
+          </div>
+        </li>
         <% } %>
       </ul>
     </div>
-    <div class="col-6 mt-5">
-      <a class="btn btn-primary" href="/profile">Return to Profile</a>
-      <a class="btn btn-primary" href="/feed">Return to Feed</a>
+    <div class="col-6 mt-5 mb-5">
+      <a class="btn btn-blue" href="/profile">Return to Profile</a>
     </div>
   </div>
 </div>
