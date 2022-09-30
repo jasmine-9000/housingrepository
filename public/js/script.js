@@ -1,12 +1,14 @@
 
+let map;
 function initMap() {
     // The location of Uluru
     const uluru = { lat: -25.344, lng: 131.031 };
     // The map, centered at Uluru
-    const map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
         zoom: 4,
         center: { lat: 37.3161984, lng: -122.0050944 },
     });
+    /*
     const coolLocations = [
         {
             latitude: 37.41524232563237, 
@@ -29,8 +31,7 @@ function initMap() {
             title: "NSA"
         }
     ]
-    let locationsArray = getLocationsArray();
-    /*google.maps.LatLngLiteral*/
+    let locationsArray = coolLocations;
     let markersArray = []
     coolLocations.forEach((location, index) => {
         console.log("Location #", index);
@@ -49,7 +50,7 @@ function initMap() {
         })
     })
     console.log(markersArray)
-    
+    */
 
     // get geolocation of current user.
     const GeoloactionObj = navigator.geolocation;

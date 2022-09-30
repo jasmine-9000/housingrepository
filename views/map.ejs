@@ -11,32 +11,16 @@
         }
 
     </style>
-<script>
-// create an array with all locations, attempt to pass it to script.js
 
-function getLocationsArray() { 
-    return [
-    <% for(let i = 0; i < locations.length; i++) { %>
-        {
-          longitude: '<%= locations[i].longitude %>',
-          latitude: '<%= locations[i].latitude %>'
-        }
-        <% if(i !== locations.length - 1) { %>
-            ,
-        <% } %>
-        
-    <% } %>
-    ] }
-
-</script>
-
-<script src="/js/script.js"></script>
 <div class="container mx-auto">
 
     <h1 class="text-3xl">Your potential new home!</h1>
     
     <!-- <img src="/imgs/google-maps.jpeg"> -->
     <div id="map"></div>
+    
+    <button class="btn btn-blue" onclick="createLocations()">Create locations...</button>
+    
     <h1 class="dark:text-white text-xl">Locations: </h1>
     <ul class="dark:text-white">
         <% for(let i = 0; i < locations.length; i++) { %> 
@@ -49,6 +33,11 @@ function getLocationsArray() {
     </ul>
     
 </div>
+<script src="/js/variables.js"></script>
+<script src="/js/maps.js"></script>
+
+<script src="/js/script.js"></script>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=<%= googlemapsapikey %>&callback=initMap&v=weekly"
     defer
 

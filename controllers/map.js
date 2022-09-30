@@ -51,12 +51,12 @@ module.exports = {
         let string = "";
         string += `Latitude: ${req.params.latitude}<br>`
         string += `Longitude: ${req.params.longitude}`
-        res.send(locations)
+        res.json(locations)
       }
       catch(error) {
         console.log("Error");
         console.log(error)
-        res.send("Error finding stuff")
+        res.json({error: error})
       }
     },
     getCoordinatesRadius: async (req, res) => {
@@ -91,12 +91,12 @@ module.exports = {
         let string = "";
         string += `Latitude: ${req.params.latitude}<br>`
         string += `Longitude: ${req.params.longitude}`
-        res.send(locations)
+        res.json(locations)
       }
       catch(error) {
         console.log("Error");
         console.log(error)
-        res.send("Error finding stuff")
+        res.json({error: "Error finding stuff"})
       }
     } 
   };
