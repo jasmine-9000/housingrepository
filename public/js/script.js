@@ -42,6 +42,7 @@ function userLocationRejected(error) {
     console.log("Error detected; going to toast")
     switch(error.code) {
         case error.PERMISSION_DENIED:
+            console.log("permission denied");
             generateToast({message: "Permission Denied"})
             //alert("Permission denied.")
         break;
@@ -64,7 +65,15 @@ function generateToast({
     color= 'FFFFFE',
     length= '3000ms'
 }) {
-    toastContainer.insertAdjacentHTML('beforeend', `<p class="toast" style="background-color: ${background}; color: ${color}; animation-duration: ${length}>${message}</p>`)
+    let newToast = document.createElement('p');
+    let newToastText = document.createTextNode(message);
+    newToast.classList.add('toast');
+    newToast.style.animationDuration = length;
+
+    //newToast.innerHTML = `<p class="toast" style="background-color: ${background}; color: ${color}; animation-duration: ${length}>${message}</p>`
+    newToast.appendChild(newToastText)
+    toastContainer.appendChild(newToast);
+    //toastContainer.insertAdjacentHTML('beforeend', `<p class="toast" style="background-color: ${background}; color: ${color}; animation-duration: ${length}>${message}</p>`)
 }
 
 (function initToast() {
