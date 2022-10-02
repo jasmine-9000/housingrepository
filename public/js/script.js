@@ -66,34 +66,81 @@ function generateToast({
     length= '3000ms'
 }) {
     let newToast = document.createElement('p');
-    let newToastText = document.createTextNode(message);
+    // <div class="ml-3 text-sm font-normal">Item moved successfully.</div>
+
+    let newToastText = document.createElement('div');
+    newToastText.classList.add('toast-text');
+    newToastText.innerText = message;
+
     newToast.classList.add('toast');
     newToast.style.animationDuration = length;
 
     //newToast.innerHTML = `<p class="toast" style="background-color: ${background}; color: ${color}; animation-duration: ${length}>${message}</p>`
+   
+    /*
+    <div class="checkmark-toast">
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <span class="sr-only">Check icon</span>
+            </div>
+    */
+    let checkmark = document.createElement('div');
+    checkmark.classList.add('checkmark-toast');
+    let svg = document.createElement('svg');
+    svg.innerHTML = '<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>'
+    checkmark.appendChild(svg);
+    let spanSR = document.createElement('span');
+    spanSR.innerText = 'Check icon'
+    spanSR.classList.add('sr-only');
+    checkmark.appendChild(spanSR); 
+
+    /*
+    <button type="button" class="toast-close-button" data-dismiss-target="#toast-success" aria-label="Close">
+        <span class="sr-only">Close</span>
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+    </button>
+    */
+    let closeButton = document.createElement('button');
+    closeButton.classList.add('toast-close-button');
+    closeButton.dataset.dismisstarget = "#toast-success"
+    closeButton.ariaLabel="Close"
+    let closeSpanSR = document.createElement("span");
+    closeSpanSR.classList.add('sr-only');
+    closeSpanSR.innerText = "Close";
+    let closeSVG = document.createElement("svg");
+    closeSVG.innerHTML = '<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>'
+    closeButton.appendChild(closeSpanSR);
+    closeButton.appendChild(closeSVG);
+
+    newToast.appendChild(checkmark);
     newToast.appendChild(newToastText)
+    newToast.appendChild(closeButton);
+
     toastContainer.appendChild(newToast);
-    //toastContainer.insertAdjacentHTML('beforeend', `<p class="toast" style="background-color: ${background}; color: ${color}; animation-duration: ${length}>${message}</p>`)
+    
+    let timerLength = Number(length.substring(0, length.length - 2))
+    console.log(timerLength)
+    // remove toast element after 3100ms (or 100ms after given length.)
+    setTimeout((e)=> {
+        newToast.remove()
+        newToastText.remove()
+        console.log("Toast managed.")
+    },timerLength + 100)
 }
 
 (function initToast() {
-    document.body.insertAdjacentHTML('afterbegin', `<div class="toast-container"></div> <style>
+    document.querySelector('#toast-container').insertAdjacentHTML('afterbegin', `<style>
   
-    .toast-container {
+    #toast-container {
       position: fixed;
-      top: 1rem;
+      top: 6rem;
       right: 1.5rem;
       display: grid;
       justify-items: end;
       gap: 1.5rem;
+      z-index: 2;
     }
     
     .toast {
-      font-size: 1.5rem;
-      font-weight: bold;
-      line-height: 1;
-      padding: 0.5em 1em;
-      background-color: lightblue;
       animation: toastIt 3000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) forwards;
     }
     
@@ -110,53 +157,8 @@ function generateToast({
       }
     }
       </style>`);
-    toastContainer = document.querySelector('.toast-container');
+    toastContainer = document.querySelector('#toast-container');
 })()
 
 // Initialize and add the map
 window.initMap = initMap;
-
-
-    /*
-    const coolLocations = [
-        {
-            latitude: 37.41524232563237, 
-            longitude: -122.06025956872777,
-            title: "NASA"
-        }, 
-        {
-            latitude: 38.89547583307576, 
-            longitude: -77.05152190382638,
-            title: 'CIA'
-        },
-        {
-            latitude: 38.895818133569385, 
-            longitude: -77.02507341362892,
-            title: "FBI"
-        },
-        {
-            latitude: 39.10883820540256, 
-            longitude: -76.77134283081112,
-            title: "NSA"
-        }
-    ]
-    let locationsArray = coolLocations;
-    let markersArray = []
-    coolLocations.forEach((location, index) => {
-        console.log("Location #", index);
-        console.log("Position being marked...: ")
-        const position =  {
-            lat: Number(location.latitude),
-            lng: Number(location.longitude)
-        } 
-        console.log(position);
-        console.log(typeof position.lat)
-        console.log(typeof position.lng)
-        new google.maps.Marker({
-            postition: position, 
-            map: map,
-            zIndex: index
-        })
-    })
-    console.log(markersArray)
-    */
