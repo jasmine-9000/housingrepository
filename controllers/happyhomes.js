@@ -50,6 +50,11 @@ module.exports = {
   },
   createHappyHome: async (req, res) => {
     try {
+      const coords = [
+        // in MongoDB, type POINT has longitude first.
+        req.body.longitude,
+        req.body.latitude
+      ]
       if(req.file) {
         
         // Upload image to cloudinary
@@ -62,10 +67,7 @@ module.exports = {
           address: req.body.address,
           location: {
             type: 'Point',
-            coordinates: [
-              req.body.latitude,
-              req.body.longitude
-            ]
+            coordinates: coords
           },
           /*
           latitude: req.body.latitude,
@@ -85,10 +87,8 @@ module.exports = {
         })
       } else {
           console.log("No image provided...");
-          console.log([
-            req.body.latitude,
-            req.body.longitude
-          ])
+          console.log("[Latitude, Longitude]: ")
+          console.log(coords)
           await HappyHome.create({
             name: req.body.name,
             image: "",
@@ -100,10 +100,7 @@ module.exports = {
             */
             location: {
               type: 'Point',
-              coordinates: [
-                req.body.latitude,
-                req.body.longitude
-              ]
+              coordinates: coords
             },
             likes: 0,
             user: req.user.id,
