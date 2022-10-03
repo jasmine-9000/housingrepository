@@ -1,34 +1,38 @@
 <%- include('partials/header') -%>
 <div class="container mx-auto">
-  <div class="dark:text-white row justify-content-center mt-5">
-    <div class="col-6">
+  <div class="dark:text-white mt-5">
       <h2 class="text-3xl"><%= happyhome.name %></h2>
-      <img class="img-fluid" src="<%= happyhome.image%>" />
-      <div class="row justify-content-between">
+      <img class="object-cover" src="<%= happyhome.image%>" />
+      <!-- image container-->
+      <div class="flex place-content-between w-2/3">
         <form
-          class="col-1"
+          class=""
           action="/happyHome/likeHappyHome/<%= happyhome.id %>?_method=PUT"
           method="POST"
         >
-          <button class="btn btn-blue fa fa-heart" type="submit">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></button>
+          <button class="btn btn-blue" type="submit">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+          </button>
         </form>
-        <h3 class="col-3">Likes: <%= happyhome.likes %></h3>
+        <h3 class="text-lg">Likes: <%= happyhome.likes %></h3>
 
         <!-- only render delete button if user is the creator.-->
-        <%if(happyhome.user == user.id){ %>
+        <% if(happyhome.user == user.id){ %>
         <form
           action="/happyHome/deleteHappyHome/<%= happyhome.id %>?_method=DELETE"
           method="POST"
-          class="col-3"
+          class=""
         >
-          <button class="btn btn-blue fa fa-trash" type="submit">DELETE</button>
+          <button class="btn btn-blue" type="submit">
+            🗑️
+            <!-- <svg class="w-6 h-6" viewBox = "0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 281.296l0 -68.355q1.953 -37.107 29.295 -62.496t64.449 -25.389l93.744 0l0 -31.248q0 -39.06 27.342 -66.402t66.402 -27.342l312.48 0q39.06 0 66.402 27.342t27.342 66.402l0 31.248l93.744 0q37.107 0 64.449 25.389t29.295 62.496l0 68.355q0 25.389 -18.553 43.943t-43.943 18.553l0 531.216q0 52.731 -36.13 88.862t-88.862 36.13l-499.968 0q-52.731 0 -88.862 -36.13t-36.13 -88.862l0 -531.216q-25.389 0 -43.943 -18.553t-18.553 -43.943zm62.496 0l749.952 0l0 -62.496q0 -13.671 -8.789 -22.46t-22.46 -8.789l-687.456 0q-13.671 0 -22.46 8.789t-8.789 22.46l0 62.496zm62.496 593.712q0 25.389 18.553 43.943t43.943 18.553l499.968 0q25.389 0 43.943 -18.553t18.553 -43.943l0 -531.216l-624.96 0l0 531.216zm62.496 -31.248l0 -406.224q0 -13.671 8.789 -22.46t22.46 -8.789l62.496 0q13.671 0 22.46 8.789t8.789 22.46l0 406.224q0 13.671 -8.789 22.46t-22.46 8.789l-62.496 0q-13.671 0 -22.46 -8.789t-8.789 -22.46zm31.248 0l62.496 0l0 -406.224l-62.496 0l0 406.224zm31.248 -718.704l374.976 0l0 -31.248q0 -13.671 -8.789 -22.46t-22.46 -8.789l-312.48 0q-13.671 0 -22.46 8.789t-8.789 22.46l0 31.248zm124.992 718.704l0 -406.224q0 -13.671 8.789 -22.46t22.46 -8.789l62.496 0q13.671 0 22.46 8.789t8.789 22.46l0 406.224q0 13.671 -8.789 22.46t-22.46 8.789l-62.496 0q-13.671 0 -22.46 -8.789t-8.789 -22.46zm31.248 0l62.496 0l0 -406.224l-62.496 0l0 406.224zm156.24 0l0 -406.224q0 -13.671 8.789 -22.46t22.46 -8.789l62.496 0q13.671 0 22.46 8.789t8.789 22.46l0 406.224q0 13.671 -8.789 22.46t-22.46 8.789l-62.496 0q-13.671 0 -22.46 -8.789t-8.789 -22.46zm31.248 0l62.496 0l0 -406.224l-62.496 0l0 406.224z"/></svg> -->
+          </button>
         </form>
-        <%}%>
+        <%} %>
 
       </div>
-    </div>
     <div class="col-3 mt-5">
+      <h1 class="text-2xl">Address</h1>
       <p><%= happyhome.address %></p>
       <p>Features:</p>
       <% if(happyhome.options) {%>
