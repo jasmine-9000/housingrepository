@@ -2,6 +2,16 @@ const cloudinary = require('../middleware/cloudinary');
 const HappyHome = require('../models/HappyHome');
 const Comment = require('../models/Comment');
 HappyHome.createIndexes({location: "2dsphere"})
+
+const HappyHomeOptions = [
+  'autismfriendly',
+  'dogfriendly',
+  'housingvouchers',
+  'affordablehousing',
+  'communitygarden',
+  'petsallowed',
+  'videomonitoring'
+]
 module.exports = {
   getProfile: async (req, res) => {
     try {
@@ -24,6 +34,7 @@ module.exports = {
         happyhome: happyhome,
         user: req.user,
         comments: comments,
+        happyhomeoptions: HappyHomeOptions
       });
 
     } catch (err) {
@@ -43,6 +54,7 @@ module.exports = {
         happyhome: happyhome,
         user: req.user,
         comments: comments,
+        happyhomeoptions: HappyHomeOptions
       });
     } catch (err) {
       console.log(err);

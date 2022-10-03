@@ -30,6 +30,20 @@
     </div>
     <div class="col-3 mt-5">
       <p><%= happyhome.address %></p>
+      <p>Features:</p>
+      <% if(happyhome.options) {%>
+        <% happyhomeoptions.forEach((option) => { %>
+            <% if(option in happyhome.options) { %>
+              <p>✔️ <%= option %></p>
+            <% } else { %> 
+              <p>❌ <%= option %></p>
+            <% } %>
+        <% }) %>
+      <% } else { %>
+        <% happyhomeoptions.forEach((option) => { %> 
+            <p>❌ <%= option %></p>
+      <% }) %>
+      <% } %>
     </div>
     <div>
       <div class="mt-5">
