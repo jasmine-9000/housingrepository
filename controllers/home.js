@@ -7,5 +7,8 @@ module.exports = {
   },
   getContact: (req, res) => {
     res.render("contact.ejs");
+  },
+  getContribute: (req, res) => {
+    res.render("contribute.ejs");
   }
 };
