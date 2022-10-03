@@ -18,6 +18,8 @@ async function createLocations() {
 function processlocations(data) {
     console.log(data);
     data.forEach(element => {
+        console.log(element)
+        console.log(element.options)
         let marker = new google.maps.Marker({
             position: {
                 // MongoDB stores latitude and longitude differently.
@@ -27,10 +29,12 @@ function processlocations(data) {
             map: map,
             title: element.name
         })
-        let infoWindow = new google.maps.InfoWindow({
+        let infoWindow = generateWindow(element);
+        
+        /*(new google.maps.InfoWindow({
             content: `<h1>${element.name}</h1>`
 
-        })
+        })*/
         marker.addListener('click', function() {
             infoWindow.open(map, marker);
         })
@@ -45,4 +49,16 @@ function processlocations(data) {
         title: data[0].name
     });
     */
+}
+
+function generateWindow(element) {
+    let infoWindow = new google.maps.InfoWindow({
+        content: `
+                    <a href='/happyHome/noauth/${element._id}'>
+                    <h1 class="text-xl">${element.name}</h1>
+                    <p class="text-lg">Address: ${element.address}</p>
+                    </a>
+                    `
+    })
+    return infoWindow
 }

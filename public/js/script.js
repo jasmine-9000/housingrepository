@@ -38,21 +38,25 @@ function initMap() {
     
 }
 
+
 function userLocationRejected(error) {
     console.log("Error detected; going to toast")
     switch(error.code) {
         case error.PERMISSION_DENIED:
             console.log("permission denied");
-            generateToast({message: "Permission Denied"})
+            generateToast({message: "User position: Permission Denied"})
             //alert("Permission denied.")
         break;
         case error.POSITION_UNAVAILABLE:
+            generateToast({message: "User position: Position Unavailable."})
             // alert("Position unavailable")
         break;
         case error.TIMEOUT:
+            generateToast({message:"The request to get user location timed out."})
             // alert("The request to get user location timed out.")
         break;
         case error.UNKNOWN_ERROR:
+            generateToast({message: "An unknown error occurred."})
             // alert("An unknown error occurred.")
         break;
     }
