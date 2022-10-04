@@ -894,6 +894,10 @@ video {
   margin-bottom: 1.25rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -912,10 +916,6 @@ video {
 
 .mt-4 {
   margin-top: 1rem;
-}
-
-.mt-10 {
-  margin-top: 2.5rem;
 }
 
 .block {
@@ -1274,10 +1274,6 @@ video {
 @media (min-width: 768px) {
   .md\:h-\[30vh\] {
     height: 30vh;
-  }
-
-  .md\:flex-row {
-    flex-direction: row;
   }
 
   .md\:px-10 {

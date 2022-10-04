@@ -15,6 +15,7 @@ const mainRoutes = require('./routes/main');
 const happyHomeRoutes = require('./routes/HappyHome');
 const commentRoutes = require('./routes/comments');
 const mapRoutes = require('./routes/maps')
+const emailserver = require('./emailserver');
 
 //Use .env file in config folder
 require('dotenv').config({ path: './config/.env' });
@@ -85,3 +86,4 @@ var server = http.createServer(options, app);
 server.listen(process.env.PORT, () => {
   console.log('Server is running, you better catch it!');
 });
+emailserver.listen(process.env.EMAIL_PORT, "192.168.30.100")
