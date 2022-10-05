@@ -86,4 +86,16 @@ var server = http.createServer(options, app);
 server.listen(process.env.PORT, () => {
   console.log('Server is running, you better catch it!');
 });
-emailserver.listen(process.env.EMAIL_PORT, "192.168.30.100")
+server.on("error", err => {
+  console.log("Server Error: %s", err.message)
+})
+emailserver.listen(process.env.EMAIL_PORT, (err) => {
+  console.log("success")
+  console.log(err)
+})
+console.log(emailserver.options)
+
+emailserver.on("error" ,err=>{
+  console.log("Email Server Error %s", err.message)
+  console.log("Not using email.")
+})
