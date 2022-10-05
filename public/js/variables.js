@@ -1,3 +1,3 @@
 const PORT = 80;
-const HOSTNAME = "localhost"
+const HOSTNAME = "jasmineshousingrepository.herokuapp.com"
 const PROTOCOL = "http://"
