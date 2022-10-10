@@ -1,6 +1,54 @@
 <%- include('partials/header') -%>
+<div class="container mx-auto my-auto">
 
-<h1>Edit Name:</h1>
-<h1 class="text-2xl"><%= happyhome.name %></h1>
-<img src="/imgs/paypal_badge_3.png">
+    <form class="">
+        <div class="mb-5">
+
+            <label for="name" class="form-label">Edit Name</h1>
+            <input type="text" class="form-control" id="name" name="name" value="<%= happyhome.name %>">
+        </div>
+        <div class="mb-5">
+
+            <label for="address" class="form-label">Edit Display Address</h1>
+            <input type="text" class="form-control" id="address" name="address" value="<%= happyhome.address %>">
+        </div>
+        
+        <% if(happyhome.image) { %>
+            <h1 class="form-label">Edit Image</h1>
+            <img src="<%= happyhome.image %>" >
+        <% } else { %>
+            <h1 class="form-label">No image uploaded</h1>
+        <% } %>
+        <div class="mb-5">
+            <label for="imgUpload" class="form-label">Upload/Change Image</label>
+            <input type="file" class="form-control" id="imageUpload" name="file">
+        </div>
+
+        <div class="mb-3">
+            <label for="googlemapsgeocoding" class="text-lg">Change Address with Google Maps</label>
+            <input type="text" class="form-control" id="googlemapsgeocoding" name="googlemapsgeocoding">
+        </div>
+        <div class="form-label">OR </div>
+        <div class="mb-5">
+            <h1 class="text-lg">Change Address with Latitude/Longitude (display name won't change)</h1>
+            <div class="flex flex-row">
+
+                <div class="latitude-container flex flex-col">
+                    <label for="latitude" class="form-label">Latitude</label>
+                    <input type="text" class="form-control" id="latitude" name="latitude" value="<%= happyhome.location.coordinates ? happyhome.location.coordinates[1] : '' %>">
+                </div>
+                <div class="longitude-container flex flex-col">
+                    <label for="longitude" class="form-label">Longitude</label>
+                    <input type="text" class="form-control" id="longitude" name="longitude" value="<%= happyhome.location.coordinates ? happyhome.location.coordinates[0] : '' %>">
+                </div>
+            </div>
+
+        </div>
+        <div class="text-2xl">Options</div>
+        <%- include('partials/newhomeformoptions', {options: happyhome.options}) %>
+        <img src="/imgs/paypal_badge_3.png">
+    </form>    
+</div>
+    
+
 <%- include('partials/footer') -%>
