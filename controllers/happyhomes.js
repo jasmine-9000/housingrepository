@@ -52,15 +52,9 @@ module.exports = {
         console.log(comments);
       res.render('happyhome.ejs', {
         happyhome: happyhome,
-        user: 'meow',
+        user: {id: 0},
         comments: comments,
         happyhomeoptions: HappyHomeOptions
-      }, function(err, html) {
-        if(err) {
-          res.write("fuck");
-        } else {
-          res.send(html);
-        }
       });
     } catch (err) {
       console.log(err);
