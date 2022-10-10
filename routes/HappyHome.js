@@ -15,4 +15,6 @@ router.put("/likeHappyHome/:id", happyHomeController.likeHappyHome);
 
 router.delete("/deleteHappyHome/:id", happyHomeController.deleteHappyHome);
 
+router.get("/editHappyHome/:id", ensureAuth, happyHomeController.editHappyHome);
+
 module.exports = router;

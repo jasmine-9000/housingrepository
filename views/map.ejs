@@ -93,10 +93,7 @@
     <ul class="dark:text-white">
         <% for(let i = 0; i < locations.length; i++) { %> 
 
-            <li class="pt-8 pb-8 pl-2 flex items-center border-solid border-2 mb-2">
-                <div class="bg-pink-500 w-8 h-8 rounded-full"></div>
-                <a class="p-8" href="<%= locations[i].link %>" class="item"><%= locations[i].name %> @ <%= locations[i].address %> </a>
-            </li>
+            <%- include('partials/maplocationentry', {location: locations[i]}) %>
         <% } %>
     </ul>
     

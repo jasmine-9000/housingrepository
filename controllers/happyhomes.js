@@ -167,4 +167,15 @@ module.exports = {
       res.redirect('/profile');
     }
   },
+  editHappyHome: async (req, res) => {
+    const fetchID = req.params.id
+    console.log(fetchID);
+    try {
+      let happyhome = await HappyHome.findById({ _id: fetchID });
+      res.render("edithappyhome", {happyhome: happyhome})
+    } catch(err) {
+      console.log(err);
+      res.redirect('/happyHome/' + req.params.id)
+    }
+  }
 };
