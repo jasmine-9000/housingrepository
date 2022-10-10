@@ -1,0 +1,32 @@
+<style>
+    .readmore {
+        color: #ccc;
+    }
+</style>
+<span class="text-large break-all">
+    <% let maxLength = 250 %>
+    <% if(comment.length > maxLength) {%>
+        <span class="displaycomment"><%= comment.substr(0,maxLength)%></span>
+        <span class="elipsis">...<br></span>
+        <button class="readmore" onclick=readmore(this)>Read More</button>
+        <span class="restofcomment hidden"><%= comment.substr(maxLength, comment.length) %></span>
+       
+    <% } else { %>
+    <%= comment %>
+    <% } %>
+</span>
+<script>
+    function readmore(e) {
+        /*console.log(e) */
+        let elipsis = e.previousElementSibling
+        let restofcomment = e.nextElementSibling;
+        /*
+        console.log(elipsis)
+        console.log(restofcomment)
+        */
+        elipsis.classList.toggle('hidden');
+        e.classList.toggle('hidden')
+        restofcomment.classList.toggle('hidden');
+
+    }   
+</script>

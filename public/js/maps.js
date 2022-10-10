@@ -3,8 +3,8 @@ async function getLocationsArray() {
     return []
 }
 
-async function createLocations() {
-    await fetch(`${PROTOCOL + HOSTNAME + ':' + PORT}/maps/coordinates/-76.77/39.108/20000`)
+function createLocations() {
+    return fetch(`/maps5/coordinates/-76.77/39.108/20000`)
             .then(response => {
                 console.log(response);
                 return response.json()
@@ -12,6 +12,7 @@ async function createLocations() {
             .then(data=>processlocations(data))
             .catch(err => {
                 console.log(err);
+                throw err;
             });
 }
 

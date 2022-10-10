@@ -1,15 +1,14 @@
 
 let map;
 function initMap() {
-    // The location of Uluru
-    const uluru = { lat: -25.344, lng: 131.031 };
-    // The map, centered at Uluru
+    // The map, centered at bay area
     map = new google.maps.Map(document.getElementById("map"), {
         zoom: 10,
         center: { lat: 37.3161984, lng: -122.0050944 },
-    });
+    }); 
+}
 
-
+function showUserLocation() {
     // get geolocation of current user if available.
     if('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(function(geolocationposition) {
@@ -32,10 +31,8 @@ function initMap() {
             })
         }, userLocationRejected)
     } else { 
-        console.log("Your browser isn't that good; consider upgrading.")
+        generateToast({message: "Your browser isn't that good; consider upgrading.", type:"danger"})
     }
- 
-    
 }
 
 
@@ -67,7 +64,8 @@ function generateToast({
     message,
     background= '#00214d', 
     color= 'FFFFFE',
-    length= '3000ms'
+    length= '3000ms',
+    type='success'
 }) {
     let newToast = document.createElement('p');
     // <div class="ml-3 text-sm font-normal">Item moved successfully.</div>
@@ -87,15 +85,36 @@ function generateToast({
                 <span class="sr-only">Check icon</span>
             </div>
     */
-    let checkmark = document.createElement('div');
-    checkmark.classList.add('checkmark-toast');
+    let icon = document.createElement('div');
     let svg = document.createElement('svg');
-    svg.innerHTML = '<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>'
-    checkmark.appendChild(svg);
     let spanSR = document.createElement('span');
-    spanSR.innerText = 'Check icon'
-    spanSR.classList.add('sr-only');
-    checkmark.appendChild(spanSR); 
+    switch(type) {
+        case 'success': 
+            icon.classList.add('checkmark-toast');
+            svg.innerHTML = '<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>'
+            icon.appendChild(svg);
+            spanSR.innerText = 'Check icon'
+            spanSR.classList.add('sr-only');
+            icon.appendChild(spanSR); 
+            break;
+        case 'danger':
+            icon.classList.add('danger-toast');
+            svg.innerHTML = '<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>'
+             icon.appendChild(svg);
+            spanSR.innerText = 'Danger icon'
+            spanSR.classList.add('sr-only');
+            icon.appendChild(spanSR); 
+            break;
+        case 'warning':
+            icon.classList.add('warning-toast');
+            svg.innerHTML = '<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>'
+            icon.appendChild(svg);
+            spanSR.innerText = 'Warning icon'
+            spanSR.classList.add('sr-only');
+            icon.appendChild(spanSR); 
+            break;
+    }
+    
 
     /*
     <button type="button" class="toast-close-button" data-dismiss-target="#toast-success" aria-label="Close">
@@ -107,6 +126,10 @@ function generateToast({
     closeButton.classList.add('toast-close-button');
     closeButton.dataset.dismisstarget = "#toast-success"
     closeButton.ariaLabel="Close"
+    closeButton.addEventListener('click', () => {
+        newToast.remove()
+        newToastText.remove()  
+    })
     let closeSpanSR = document.createElement("span");
     closeSpanSR.classList.add('sr-only');
     closeSpanSR.innerText = "Close";
@@ -115,7 +138,7 @@ function generateToast({
     closeButton.appendChild(closeSpanSR);
     closeButton.appendChild(closeSVG);
 
-    newToast.appendChild(checkmark);
+    newToast.appendChild(icon);
     newToast.appendChild(newToastText)
     newToast.appendChild(closeButton);
 
@@ -163,6 +186,7 @@ function generateToast({
       </style>`);
     toastContainer = document.querySelector('#toast-container');
 })()
+
 
 // Initialize and add the map
 window.initMap = initMap;

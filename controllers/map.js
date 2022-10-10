@@ -1,5 +1,5 @@
 const HappyHomes = require('../models/HappyHome')
-
+const os = require('os');
 module.exports = {
     getMap: async (req, res) => {
       const locations = await HappyHomes.find({}); 
@@ -18,7 +18,8 @@ module.exports = {
             link: "/happyHome/6328f433a2a8335174b67c15"
         }
       ]; */
-      res.render("map.ejs", {locations: locations, googlemapsapikey: process.env.GOOGLEMAPS_API_KEY});
+      console.log(req.headers.host)
+      res.render("map.ejs", {locations: locations, googlemapsapikey: process.env.GOOGLEMAPS_API_KEY, hostname: req.headers.host});
     },
     getCoordinates: async (req, res) => {
       try {
