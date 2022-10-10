@@ -50,11 +50,17 @@ module.exports = {
         .sort({ createdAt: 'desc' })
         .lean();
         console.log(comments);
-      res.render('happyhomenoauth.ejs', {
+      res.render('happyhome.ejs', {
         happyhome: happyhome,
-        user: req.user,
+        user: 'meow',
         comments: comments,
         happyhomeoptions: HappyHomeOptions
+      }, function(err, html) {
+        if(err) {
+          res.write("fuck");
+        } else {
+          res.send(html);
+        }
       });
     } catch (err) {
       console.log(err);
