@@ -113,6 +113,7 @@ function generateToast({
             spanSR.classList.add('sr-only');
             icon.appendChild(spanSR); 
             break;
+
     }
     
 
@@ -186,7 +187,20 @@ function generateToast({
       </style>`);
     toastContainer = document.querySelector('#toast-container');
 })()
+// the readmore button for comments longer than 250 characters.
+function readmore(e) {
+    /*console.log(e) */
+    let elipsis = e.previousElementSibling
+    let restofcomment = e.nextElementSibling;
+    /*
+    console.log(elipsis)
+    console.log(restofcomment)
+    */
+    elipsis.classList.toggle('hidden');
+    e.classList.toggle('hidden')
+    restofcomment.classList.toggle('hidden');
 
+}   
 
 // Initialize and add the map
 window.initMap = initMap;
