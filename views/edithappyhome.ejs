@@ -1,5 +1,6 @@
 <%- include('partials/header') -%>
 <div class="container md:mx-auto md:my-auto dark:text-white ">
+    <div id="toast-container"></div>
     <h1 class="text-3xl mb-10">Edit Home</h1>
     <form class="" action="/happyHome/editHappyHome/<%=  %>?_method=PUT">
         <div class="mb-5">
@@ -24,9 +25,12 @@
             <input type="file" class="form-control" id="imageUpload" name="file">
         </div>
 
-        <div class="mb-3">
-            <label for="googlemapsgeocoding" class="text-lg">Change Address with Google Maps</label>
-            <input type="text" class="form-control" id="googlemapsgeocoding" name="googlemapsgeocoding">
+        <div class="mb-3 relative">
+            <label for="googlemapsgeocoder" class="form-label">Google Maps Address Lookup</label>
+            <input type="text" class="form-control" id="googlemapsgeocoder" name="googlemapsgeocoder" onblur="geocode(this.value)">
+            <!-- <button id="addaddress" class="btn btn-blue">Add Address</button> -->
+            <ul id="googlemapsaddresses" class="absolute hidden "> <!-- hidden on initial load-->
+            </ul>
         </div>
         <div class="form-label">OR </div>
         <div class="mb-5">
@@ -49,6 +53,7 @@
         <img src="/imgs/paypal_badge_3.png">
     </form>    
 </div>
-    
+<script src="/js/toast.js"></script>
+<script src="/js/geocode.js" defer></script>
 
 <%- include('partials/footer') -%>
