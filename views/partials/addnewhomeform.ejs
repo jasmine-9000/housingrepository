@@ -41,13 +41,15 @@
     <%- include('newhomeformoptions', {options: {}}) %>
 
     <button type="submit" class="btn btn-blue" value="Upload">Submit</button>
-  </form>
+</form>
+<script src="/js/geocode.js" defer></script>  
+<!--
   <script>
     function geocode(e) {
         e = e.trim(' '); // trim whitespace on input. no blank searches plz.
         console.log(e);
         if(e === '') return; // search cannot be blank.
-        const URL = `https://maps.googleapis.com/maps/api/geocode/json?address=${e.replace(' ', '+')}&key=<%= googlemapsgeocodingAPIkey %>`
+        const URL = `https://maps.googleapis.com/maps/api/geocode/json?address=${e.replace(' ', '+')}&key=>`
         fetch(URL)
             .then(response => response.json())
             .then(data => {
@@ -99,4 +101,4 @@
         newItem.innerHTML = `<li class="bg-blue-500" onclick="addaddress({displayname: '${f_address}', longitude: ${item.geometry.location.lng}, latitude:  ${item.geometry.location.lat}})">${f_address}</li>`
         document.getElementById('googlemapsaddresses').appendChild(newItem);
     }
-  </script>
+  </script> -->

@@ -7,5 +7,9 @@ const mapController = require('../controllers/map');
 router.get('/', mapController.getMap);
 router.get('/coordinates/:latitude/:longitude', mapController.getCoordinates)
 router.get('/coordinates/:latitude/:longitude/:radius', mapController.getCoordinatesRadius)
+router.get('/geocode/:address', mapController.geocode);
 
 module.exports = router;
+
+
+

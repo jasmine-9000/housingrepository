@@ -1,5 +1,6 @@
 const HappyHomes = require('../models/HappyHome')
 const os = require('os');
+const axios = require('axios')
 module.exports = {
     getMap: async (req, res) => {
       const locations = await HappyHomes.find({}); 
@@ -99,6 +100,28 @@ module.exports = {
         console.log(error)
         res.json({error: "Error finding stuff"})
       }
-    } 
+    },
+
+    geocode: async (req, res) => {
+        try{
+        const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.address}&key=${process.env.GOOGLEMAPS_GEOCODING_API_KEY}`
+        axios.get(url)
+          .then(response => {
+            console.log("AXIOS RESPONSE: ")
+            console.log(response)
+            res.json(response.data);
+            return
+          })
+          .catch(err => {
+            console.log("AXIOS ERROR: ")
+            console.log(err)
+            res.json(err)
+          })
+        } catch(err) {
+          console.log("AXIOS ERROR")
+          console.log(err)
+          res.json(err);
+        }
+      }
   };
-  
+
