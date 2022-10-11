@@ -11,6 +11,7 @@ router.get("/googlemapstest", (req, res) => {
 })
 router.get("/", homeController.getIndex);
 router.get("/credits", homeController.getCredits);
+router.get("/about", homeController.getAbout);
 router.get("/contact", homeController.getContact);
 router.get("/contribute",homeController.getContribute);
 router.get("/profile", ensureAuth, happyHomeController.getProfile);

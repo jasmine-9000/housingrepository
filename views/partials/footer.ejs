@@ -1,9 +1,14 @@
-    <footer class="mb-4 bg-pink-500 p-4 flex flex-col text-center md:text-left md:justify-content-around">
-        <a href="/credits" class="text-white">Credits</a>
-        <a href="/contact" class="text-white">Contact Site Owner</a>
-        <a href="/contribute" class="text-white">Contribute</a>
-        <a href="https://twitter.com/William83292075" class="text-white">Twitter</a>
-        <form action="https://www.paypal.com/donate" method="post" target="_top">
+    <footer class="mb-4 bg-pink-500 p-4 flex flex-col md:flex-row text-center md:text-left md:justify-content-around">
+        <div class="flex flex-col">
+
+            
+            <a href="/credits" class="text-white">Credits</a>
+            <a href="/contact" class="text-white">Contact Site Owner</a>
+            <a href="/contribute" class="text-white">Contribute</a>
+            <a href="/about" class="text-white">About this Site</a> 
+            <a href="https://twitter.com/William83292075" class="text-white">Twitter</a>
+        </div>
+        <form action="https://www.paypal.com/donate" method="post" target="_top" class="mx-auto md:mr-0"> <!-- on medium and up, float the paypal button to the right.-->
             <input type="hidden" name="business" value="J2ZMCV34XVC3L"/>
             <input type="hidden" name="no_recurring" value="0" />
             <input type="hidden" name="item_name" value="This contribution will help keep this website up and running and will pay for server costs." />

@@ -10,5 +10,8 @@ module.exports = {
   },
   getContribute: (req, res) => {
     res.render("contribute.ejs");
+  },
+  getAbout: (req, res) => {
+    res.render("about.ejs");
   }
 };
