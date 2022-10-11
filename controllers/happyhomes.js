@@ -180,5 +180,8 @@ module.exports = {
       console.log(err);
       res.redirect('/happyHome/' + req.params.id)
     }
+  },
+  editHappyHomeWrite: async (req, res) => {
+    res.redirect(`/happyHome/${req.params.id}`)
   }
 };
