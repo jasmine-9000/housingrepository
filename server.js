@@ -16,6 +16,7 @@ const happyHomeRoutes = require('./routes/HappyHome');
 const commentRoutes = require('./routes/comments');
 const mapRoutes = require('./routes/maps')
 const emailserver = require('./emailserver');
+const emailRoutes = require('./routes/email');
 
 //Use .env file in config folder
 require('dotenv').config({ path: './config/.env' });
@@ -64,6 +65,7 @@ app.use('/', mainRoutes);
 app.use('/happyHome', happyHomeRoutes);
 app.use('/comment', commentRoutes);
 app.use('/maps', mapRoutes);
+app.use('/email', emailRoutes);
 /*
 // setup HTTPS listening...
 var cert = fs.readFileSync(__dirname + "/cert.pem");
