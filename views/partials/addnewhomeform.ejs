@@ -27,46 +27,8 @@
       <input type="file" class="form-control" id="imageUpload" name="file">
     </div>
     <h3 class="dark:text-white text-2xl mb-2">Options</h3>
-    
-    <div class="mb-3">
-      <input type="checkbox" class="form-check-input" value="" id="autismfriendly" name="autismfriendly">
-      <label for="autismfriendly" class="form-label">Autism Friendly</label>
-      
-    </div>
-    
-    <div class="mb-2">
-      <input type="checkbox" class="form-check-input" value="" id="dogfriendly" name="dogfriendly">
-      <label for="dogfriendly" class="form-label">Dog Friendly</label>
-      
-    </div>
-    
-    <div class="mb-2">
-      <input type="checkbox" class="form-check-input" value="" id="housingvouchers" name="housingvouchers">
-      <label for="housingvouchers" class="form-label">Takes Housing Vouchers</label>
-      
-    </div>
+    <% /* include options in a secondary form to avoid repeating stuff */ %>
+    <%- include('newhomeformoptions', {options: {}}) %>
 
-    
-    <div class="mb-2">
-      <input type="checkbox" class="form-check-input" value="" id="affordablehousing" name="affordablehousing">
-      <label for="affordablehousing" class="form-label">Affordable Housing Units</label>
-      
-    </div>
-    <div class="mb-2">
-      <input type="checkbox" class="form-check-input" value="" id="communitygarden" name="communitygarden">
-      <label for="communitygarden" class="form-label">Has a community garden?</label>
-      
-    </div>
-    <div class="mb-2">
-      <input type="checkbox" class="form-check-input" value="" id="petsallowed" name="petsallowed">
-      <label for="petsallowed" class="form-label">Are pets allowed?</label>
-      
-    </div>
-    <div class="mb-2">
-      <input type="checkbox" class="form-check-input" value="" id="videomonitoring" name="videomonitoring">
-      <label for="videomonitoring" class="form-label">Video Monitoring</label>
-      
-    </div>
-    
     <button type="submit" class="btn btn-blue" value="Upload">Submit</button>
   </form>

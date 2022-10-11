@@ -8,9 +8,11 @@ const HappyHomeOptions = [
   'dogfriendly',
   'housingvouchers',
   'affordablehousing',
+  'consumerowned',
   'communitygarden',
   'petsallowed',
-  'videomonitoring'
+  'videomonitoring',
+  'lgbtqplusfriendly'
 ]
 module.exports = {
   getProfile: async (req, res) => {

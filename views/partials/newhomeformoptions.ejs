@@ -5,35 +5,47 @@
   </div>
   
   <div class="mb-2">
-    <input type="checkbox" class="form-check-input" value="" id="dogfriendly" name="dogfriendly" value="checked">
+    <input type="checkbox" class="form-check-input" value="" id="dogfriendly" name="dogfriendly" <%= 'dogfriendly' in options ? 'checked': '' %>>
     <label for="dogfriendly" class="form-label">Dog Friendly</label>
     
   </div>
   
   <div class="mb-2">
-    <input type="checkbox" class="form-check-input" value="" id="housingvouchers" name="housingvouchers">
+    <input type="checkbox" class="form-check-input" value="" id="housingvouchers" name="housingvouchers" <%= 'housingvouchers' in options ? 'checked': '' %>>
     <label for="housingvouchers" class="form-label">Takes Housing Vouchers</label>
     
   </div>
 
+  <div class="mb-2">
+    <input type="checkbox" class="form-check-input" name="consumerowned" id="consumerowned" <%= 'consumerowned' in options ? 'checked': '' %>>
+    <label for="consumerowned" class="form-label">Consumer-Owned/Controlled Setting</label>
+  </div>
+
+
+
   
   <div class="mb-2">
-    <input type="checkbox" class="form-check-input" value="" id="affordablehousing" name="affordablehousing">
+    <input type="checkbox" class="form-check-input" value="" id="affordablehousing" name="affordablehousing" <%= 'affordablehousing' in options ? 'checked': '' %>>
     <label for="affordablehousing" class="form-label">Affordable Housing Units</label>
     
   </div>
   <div class="mb-2">
-    <input type="checkbox" class="form-check-input" value="" id="communitygarden" name="communitygarden">
+    <input type="checkbox" class="form-check-input" value="" id="communitygarden" name="communitygarden" <%= 'communitygarden' in options ? 'checked': '' %>>
     <label for="communitygarden" class="form-label">Has a community garden?</label>
     
   </div>
   <div class="mb-2">
-    <input type="checkbox" class="form-check-input" value="" id="petsallowed" name="petsallowed">
+    <input type="checkbox" class="form-check-input" value="" id="petsallowed" name="petsallowed" <%= 'petsallowed' in options ? 'checked': '' %>>
     <label for="petsallowed" class="form-label">Are pets allowed?</label>
     
   </div>
   <div class="mb-2">
-    <input type="checkbox" class="form-check-input" value="" id="videomonitoring" name="videomonitoring">
+    <input type="checkbox" class="form-check-input" value="" id="videomonitoring" name="videomonitoring" <%= 'videomonitoring' in options ? 'checked': '' %>>
     <label for="videomonitoring" class="form-label">Video Monitoring</label>
+    
+  </div>
+  <div class="mb-2">
+    <input type="checkbox" class="form-check-input" value="" id="lgbtqplusfriendly" name="lgbtqplusfriendly" <%= 'lgbtqplusfriendly' in options ? 'checked': '' %>>
+    <label for="lgbtqplusfriendly" class="form-label">LGBTQ+ Friendly</label>
     
   </div>
