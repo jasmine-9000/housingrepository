@@ -1,5 +1,6 @@
 <%- include('partials/header') -%>
 <div class="container mx-auto">
+  <div id="toast-container"></div>
   <div class="row mt-5">
       <div class="col-6">
           <div class="dark:text-white">
@@ -9,7 +10,7 @@
           </div>
           <div class="mt-5">
             <h2 class="dark:text-white text-2xl">Add a Home</h2>
-            <%- include('partials/addnewhomeform') -%>
+            <%- include('partials/addnewhomeform', {googlemapsgeocodingAPIkey: googlemapsgeocodingAPIkey}) -%>
           </div>
       </div>
       <div class="dark:text-white col-6 mt-5">
@@ -30,4 +31,7 @@
     </div>
   </div>
 </div>
+<script src="/js/script.js"></script>
+<script src="/js/variables.js"></script>
+<script src="/js/maps.js"></script>
 <%- include('partials/footer') -%>

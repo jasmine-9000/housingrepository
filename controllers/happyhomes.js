@@ -18,7 +18,7 @@ module.exports = {
   getProfile: async (req, res) => {
     try {
       const happyHomes = await HappyHome.find({ user: req.user.id });
-      res.render('profile.ejs', { happyHomes: happyHomes, user: req.user });
+      res.render('profile.ejs', { happyHomes: happyHomes, user: req.user, googlemapsgeocodingAPIkey: process.env.GOOGLEMAPS_GEOCODING_API_KEY});
     } catch (err) {
       console.log(err);
     }

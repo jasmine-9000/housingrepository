@@ -4,9 +4,10 @@
         <input type="text" class="form-control" id="name" name="name" placeholder="Foster's Home for Imaginary Friends">
     </div>
     
+    
     <div class="mb-3">
-        <label for="googlemapsencoder" class="form-label">Google Maps Address Lookup</label>
-        <input type="text" class="form-control" id="googlemaps" name="googlemapsencoder">
+      <label for="imgUpload" class="form-label">Image</label>
+      <input type="file" class="form-control" id="imageUpload" name="file">
     </div>
     <h1 class="text-2xl">Input Latitude & Longitude </h1>
     <div class="mb-3">
@@ -21,10 +22,19 @@
       <label for="longitude" class="form-label">Longitude</label>
       <input type="text" class="form-control" id="longitude" name="longitude"> 
     </div>
+    <h1 class="text-2xl">OR</h1>
+    <div class="mb-3 relative">
+        <label for="googlemapsgeocoder" class="form-label">Google Maps Address Lookup</label>
+        <input type="text" class="form-control" id="googlemapsgeocoder" name="googlemapsgeocoder" onblur="geocode(this.value)">
+        <!-- <button id="addaddress" class="btn btn-blue">Add Address</button> -->
+        <ul id="googlemapsaddresses" class="absolute hidden "> <!-- hidden on initial load-->
+        </ul>
+    </div>
     
-    <div class="mb-3">
-      <label for="imgUpload" class="form-label">Image</label>
-      <input type="file" class="form-control" id="imageUpload" name="file">
+    <div class="mb-3 flex flex-col">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control border-2 p-2" id="description" name="description" placeholder="Enter a description here..."></textarea>
+        
     </div>
     <h3 class="dark:text-white text-2xl mb-2">Options</h3>
     <% /* include options in a secondary form to avoid repeating stuff */ %>
@@ -32,3 +42,61 @@
 
     <button type="submit" class="btn btn-blue" value="Upload">Submit</button>
   </form>
+  <script>
+    function geocode(e) {
+        e = e.trim(' '); // trim whitespace on input. no blank searches plz.
+        console.log(e);
+        if(e === '') return; // search cannot be blank.
+        const URL = `https://maps.googleapis.com/maps/api/geocode/json?address=${e.replace(' ', '+')}&key=<%= googlemapsgeocodingAPIkey %>`
+        fetch(URL)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if(data.status === 'OK') {
+                    data.results.forEach((result) => {
+                        createMapsAddressCard(result);
+                    })
+                } else if (data.status === 'ZERO_RESULTS') {
+                    generateToast({message: 'Zero results', type: 'error'})
+                } else if (data.status === 'INVALID_REQUEST') {
+                    generateToast({message: 'Invalid input', type: 'error'})
+                } else {
+                    throw "Google maps error."
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                generateToast({message: 'Error on google maps search. Check browser console for details..', type: 'error'})
+            })
+        if(document.getElementById('googlemapsaddresses').classList.contains('hidden')) {
+            togglemapsaddresses();
+        }
+    }
+    function addaddress({
+        displayname, 
+        latitude= 0,
+        longitude=0
+    }) {
+        document.getElementById('address').value = displayname
+        document.getElementById('latitude').value = latitude
+        document.getElementById('longitude').value = longitude
+        togglemapsaddresses();
+        clearaddresses();
+    }
+    function clearaddresses() {
+        const a = document.getElementById('googlemapsaddresses').childNodes;
+        [...a].forEach(address => {
+            address.remove()
+        })
+    }
+    function togglemapsaddresses() {
+        document.getElementById('googlemapsaddresses').classList.toggle('hidden');
+    }
+    function createMapsAddressCard(item) {
+        console.log(item)
+        let f_address = item.formatted_address;
+        const newItem = document.createElement('li');
+        newItem.innerHTML = `<li class="bg-blue-500" onclick="addaddress({displayname: '${f_address}', longitude: ${item.geometry.location.lng}, latitude:  ${item.geometry.location.lat}})">${f_address}</li>`
+        document.getElementById('googlemapsaddresses').appendChild(newItem);
+    }
+  </script>
