@@ -174,6 +174,7 @@ module.exports = {
     console.log(fetchID);
     try {
       let happyhome = await HappyHome.findById({ _id: fetchID });
+      console.log(happyhome);
       res.render("edithappyhome", {happyhome: happyhome})
     } catch(err) {
       console.log(err);

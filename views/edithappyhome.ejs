@@ -1,7 +1,7 @@
 <%- include('partials/header') -%>
-<div class="container mx-auto my-auto">
-
-    <form class="">
+<div class="container md:mx-auto md:my-auto dark:text-white ">
+    <h1 class="text-3xl mb-10">Edit Home</h1>
+    <form class="" action="/happyHome/editHappyHome/<%=  %>?_method=PUT">
         <div class="mb-5">
 
             <label for="name" class="form-label">Edit Name</h1>
@@ -31,7 +31,7 @@
         <div class="form-label">OR </div>
         <div class="mb-5">
             <h1 class="text-lg">Change Address with Latitude/Longitude (display name won't change)</h1>
-            <div class="flex flex-row">
+            <div class="flex flex-col md:flex-row">
 
                 <div class="latitude-container flex flex-col">
                     <label for="latitude" class="form-label">Latitude</label>
@@ -45,7 +45,7 @@
 
         </div>
         <div class="text-2xl">Options</div>
-        <%- include('partials/newhomeformoptions', {options: happyhome.options}) %>
+        <%- include('partials/newhomeformoptions', {options: happyhome.options || {}}) %>
         <img src="/imgs/paypal_badge_3.png">
     </form>    
 </div>

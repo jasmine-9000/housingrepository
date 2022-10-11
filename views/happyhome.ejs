@@ -88,6 +88,9 @@
       <h1>Current user: <%= user.userName %></h1>
       <% } %>
       <h1 class="text-2xl">Comments</h1>
+      <% if(comments.length > 0) { %>
+
+      
       <ul>
         <% for( let i = 0; i < comments.length; i++ ) { %>
           <li>
@@ -98,6 +101,9 @@
         </li>
         <% } %>
       </ul>
+      <% } else { %>
+      <h2 class="">No comments</h2>
+      <% } %>
     </div>
     <div class="col-6 mt-5 mb-5">
       <a class="btn btn-blue" href="/profile">Return to Profile</a>
