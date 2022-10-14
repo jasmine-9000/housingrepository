@@ -122,6 +122,23 @@ module.exports = {
           console.log(err)
           res.json(err);
         }
-      }
+      },
+    getmapjs: async (req, res) => {
+      try {
+        const url = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLEMAPS_API_KEY}&callback=initMap&v=weekly`
+        axios.get(url)
+        .then(response => {
+          console.log("AXIOS RESPONSE: ");
+          console.log(response);
+          res.send(response.data);
+        })
+        .catch(err =>  {
+          throw err;
+        })
+      } catch(err) {
+        console.log("Error handling getmapjs. Error: ")
+        console.log(err);
+      } 
+    }
   };
 
