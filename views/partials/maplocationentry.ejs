@@ -1,5 +1,9 @@
 <li class="pt-8 pb-8 pl-2 flex items-center border-solid border-2 mb-2">
-    <div class="bg-pink-500 w-8 h-8 rounded-full"></div>
-    <img src="<%= location.img %>">
+    <% if(location.image !== "" && location.image !== null) { %>
+        <div class="aspect-square w-32 md:w-8 bg-cover rounded-full" style="background-image: url('<%= location.image %>');"></div>
+       
+    <% } else { %>
+        <div class="bg-pink-500 aspect-square w-32 md:w-8 rounded-full"></div>
+    <% } %>
     <a class="p-8" href="<%= location.link %>" class="item"><%= location.name %> @ <%= location.address %> </a>
 </li>
