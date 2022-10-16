@@ -158,9 +158,9 @@ module.exports = {
     try {
       
       // Find post by id
-      let post = await HappyHome.findById({ _id: fetchID });
+      let happyHome = await HappyHome.findById({ _id: fetchID });
       // Delete image from cloudinary
-      await cloudinary.uploader.destroy(post.cloudinaryId);
+      await cloudinary.uploader.destroy(happyHome.cloudinaryId);
       // Delete post from db
       await HappyHome.remove({ _id: fetchID });
       console.log('Deleted Post');
@@ -168,6 +168,33 @@ module.exports = {
     } catch (err) {
       res.redirect('/profile');
     }
+  },
+  deleteHappyHomeImage: async (req, res) => {
+    const fetchID = req.params.id;
+    try {
+      let happyHome = await HappyHome.findById({_id: fetchID});
+
+      await cloudinary.uploader.destroy(happyHome.cloudinaryId);
+
+      happyHome.image = ""
+      happyHome.cloudinaryId = "";
+      await HappyHome.updateOne({_id: fetchID}, 
+        {
+          $set: 
+            {
+              image: "",
+              cloudinaryId: ""
+            }
+      })
+      res.redirect(`/happyHome/${fetchID}`)
+    } catch(err) {
+      console.log("Error occurred deleting only happy home image. Details: ");
+      console.log(err);
+      res.redirect(`/happyHome/${fetchID}`)
+    }
+  },
+  uploadHappyHomeImage: async (req, res) => {
+    res.redirect('/');
   },
   editHappyHome: async (req, res) => {
     const fetchID = req.params.id
@@ -182,6 +209,84 @@ module.exports = {
     }
   },
   editHappyHomeWrite: async (req, res) => {
-    res.redirect(`/happyHome/${req.params.id}`)
-  }
-};
+    const fetchID = req.params.id;
+    // console.log(req.file)
+    // console.log(req.body);
+    let result;
+    try {
+      const happyHome = await HappyHome.findById({_id: fetchID})
+      // console.log(happyHome)
+      let newHappyHomeupdate = {}
+      
+      // do new image here
+      if(req.file) {
+          result = await cloudinary.uploader.upload(req.file.path);
+          console.log("Cloudinary Upload Result: ")
+          console.log(result);
+          if(notnullorblank(happyHome.image) && notnullorblank(happyHome.cloudinaryId) ) {
+              await cloudinary.uploader.destroy(happyHome.cloudinaryId); // you don't need to remove image src and id from database since we will be replacing them anyways. 
+          }
+          newHappyHomeupdate.image = result.secure_url;
+          newHappyHomeupdate.cloudinaryId = result.public_id;
+
+          // image: result.secure_url,
+            // cloudinaryId: result.public_id
+      }
+      
+      // do location here
+      const newCoords = [
+        // in MongoDB, type POINT has longitude first.
+        req.body.longitude,
+        req.body.latitude
+      ]
+      if(happyHome.location.coordinates !== newCoords) {
+        newHappyHomeupdate.location = {
+          type: 'Point',
+          coordinates: newCoords
+        }
+      }
+
+      // do options here
+      let newOptions = {}
+      HappyHomeOptions.forEach(option => {
+        if(option in req.body) {
+          newOptions[option] = '';
+        }
+      })
+
+      if(newOptions !== {}) {
+        newHappyHomeupdate.options = newOptions;
+      }
+
+      // console.log(happyHome);
+      // do all others here
+      const allOthers = ['name', 'address']
+      for(key of allOthers) {
+          console.log("Key: %s, Value: %s", key, happyHome[key]);
+          if(happyHome[key] !== req.body[key]) {
+            newHappyHomeupdate[key] = req.body[key]
+          }
+      }
+      console.log("Values to update: ")
+      console.log(newHappyHomeupdate)
+      await HappyHome.findOneAndUpdate({_id: fetchID}, 
+        newHappyHomeupdate)
+        
+        
+        /*.catch(async (err) => {
+            await cloudinary.destroy(result.public_id)
+        })*/
+
+      res.redirect(`/happyHome/${req.params.id}`)
+    }
+    catch (err) {
+      console.log(err);
+      await cloudinary.destroy(result.public_id) // destroy cloudinary image if url is not saved to database properly. 
+      res.redirect(`/happyHome/${fetchID}`)
+    }
+  } 
+}
+function notnullorblank(item) {
+  if(item === "" || item === null) return false;
+  return true 
+}

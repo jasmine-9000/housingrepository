@@ -2,7 +2,7 @@
 <div class="container md:mx-auto md:my-auto dark:text-white p-2">
     <div id="toast-container"></div>
     <h1 class="text-3xl mb-10">Edit Home</h1>
-    <form class="mb-5" action="/happyHome/editHappyHome/<%= happyhome.id %>?_method=PUT">
+    <form class="mb-5" action="/happyHome/editHappyHomeWrite/<%= happyhome.id %>?_method=PUT" method="POST">
         <div class="mb-5">
 
             <label for="name" class="form-label">Edit Name</h1>
@@ -17,6 +17,10 @@
         <% if(happyhome.image) { %>
             <h1 class="form-label">Edit Image</h1>
             <img src="<%= happyhome.image %>" >
+            <form action="/maps/deleteHappyHomeImage/<%= happyhome.id %>?_method=PUT">
+                <button type="submit">Delete Image</button>
+                <p class="">Other unsaved changes will be lost.</p>
+            </form>
         <% } else { %>
             <h1 class="form-label">No image uploaded</h1>
         <% } %>

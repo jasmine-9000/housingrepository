@@ -1016,10 +1016,6 @@ video {
   width: 1rem;
 }
 
-.w-16 {
-  width: 4rem;
-}
-
 .w-32 {
   width: 8rem;
 }
@@ -1357,10 +1353,6 @@ video {
 
   .md\:h-\[30vh\] {
     height: 30vh;
-  }
-
-  .md\:h-8 {
-    height: 2rem;
   }
 
   .md\:w-8 {
