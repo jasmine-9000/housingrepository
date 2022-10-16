@@ -186,7 +186,7 @@ module.exports = {
               cloudinaryId: ""
             }
       })
-      res.redirect(`/happyHome/${fetchID}`)
+      res.status(302).redirect(`/happyHome/${fetchID}`)
     } catch(err) {
       console.log("Error occurred deleting only happy home image. Details: ");
       console.log(err);
