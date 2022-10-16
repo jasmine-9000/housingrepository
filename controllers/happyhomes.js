@@ -282,7 +282,7 @@ module.exports = {
     }
     catch (err) {
       console.log(err);
-      await cloudinary.destroy(result.public_id) // destroy cloudinary image if url is not saved to database properly. 
+      // await cloudinary.destroy(result.public_id) // (doesn't work) destroy cloudinary image if url is not saved to database properly. 
       res.redirect(`/happyHome/${fetchID}`)
     }
   } 
