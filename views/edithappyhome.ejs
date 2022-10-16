@@ -2,7 +2,7 @@
 <div class="container md:mx-auto md:my-auto dark:text-white p-2">
     <div id="toast-container"></div>
     <h1 class="text-3xl mb-10">Edit Home</h1>
-    <form class="mb-5" action="/happyHome/editHappyHomeWrite/<%= happyhome.id %>?_method=PUT" method="POST">
+    <form class="mb-5" action="/happyHome/editHappyHomeWrite/<%= happyhome.id %>?_method=PUT" method="POST"  enctype='multipart/form-data'>
         <div class="mb-5">
 
             <label for="name" class="form-label">Edit Name</h1>

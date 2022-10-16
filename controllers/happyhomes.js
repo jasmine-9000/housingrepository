@@ -210,7 +210,7 @@ module.exports = {
   },
   editHappyHomeWrite: async (req, res) => {
     const fetchID = req.params.id;
-    // console.log(req.file)
+    console.log(req.file)
     // console.log(req.body);
     let result;
     try {
@@ -263,6 +263,7 @@ module.exports = {
       const allOthers = ['name', 'address']
       for(key of allOthers) {
           console.log("Key: %s, Value: %s", key, happyHome[key]);
+          console.log("Key: %s, Value: %s", key, req.body[key]);
           if(happyHome[key] !== req.body[key]) {
             newHappyHomeupdate[key] = req.body[key]
           }

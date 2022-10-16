@@ -17,8 +17,8 @@ router.delete("/deleteHappyHome/:id", happyHomeController.deleteHappyHome);
 
 router.get("/editHappyHome/:id", ensureAuth, happyHomeController.editHappyHome);
 
-router.put("/editHappyHomeWrite/:id", ensureAuth, happyHomeController.editHappyHomeWrite)
+router.put("/editHappyHomeWrite/:id", upload.single("file"), happyHomeController.editHappyHomeWrite)
 
-router.put("/deleteHappyHomeImage/:id", upload.single("file"), happyHomeController.deleteHappyHomeImage);
+router.put("/deleteHappyHomeImage/:id", ensureAuth, happyHomeController.deleteHappyHomeImage);
 
 module.exports = router;
