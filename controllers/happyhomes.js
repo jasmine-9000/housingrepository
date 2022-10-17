@@ -1,6 +1,9 @@
+// imports
 const cloudinary = require('../middleware/cloudinary');
 const HappyHome = require('../models/HappyHome');
 const Comment = require('../models/Comment');
+
+// create MongoDB indices
 HappyHome.createIndexes({location: "2dsphere"})
 
 const HappyHomeOptions = [
@@ -15,12 +18,20 @@ const HappyHomeOptions = [
   'lgbtqplusfriendly'
 ]
 module.exports = {
+  // render user profile. 
   getProfile: async (req, res) => {
     try {
       const happyHomes = await HappyHome.find({ user: req.user.id });
+      console.log(typeof happyHomes)
+      console.log(happyHomes)
+      if(happyHomes == [] || happyHomes == {} || happyHomes == null) {
+        throw 404
+      }
       res.render('profile.ejs', { happyHomes: happyHomes, user: req.user, googlemapsgeocodingAPIkey: process.env.GOOGLEMAPS_GEOCODING_API_KEY});
     } catch (err) {
       console.log(err);
+      
+      res.render('errors/404.ejs');
     }
   },
   getHappyHome: async (req, res) => {
@@ -30,7 +41,9 @@ module.exports = {
         .populate('user', 'userName')
         .sort({ createdAt: 'desc' })
         .lean();
+      if(process.env.NODE_ENV === 'development') {
         console.log(comments);
+      }
         
       res.render('happyhome.ejs', {
         happyhome: happyhome,

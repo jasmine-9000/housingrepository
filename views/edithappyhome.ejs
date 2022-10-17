@@ -16,10 +16,14 @@
                     .then(response => {
                         if(response.redirected) {
                             window.location.href = response.url;
+                        } else {
+                            throw "Could not redirect page."
                         }
                     })
                     .catch(err => {
-                        generateToast({message: "Error redirecting page. Try manual refresh."})
+                        console.log("Error: ");
+                        console.log(err);
+                        generateToast({message: "Error redirecting page. Check your browser console for details."})
                     })
                     
                 }
