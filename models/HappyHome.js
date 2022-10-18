@@ -17,6 +17,9 @@ const HomeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String
+  },
   location: {
     type: {
       type: String,

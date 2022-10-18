@@ -103,10 +103,21 @@ module.exports = {
       let long = req.body.longitude,
           lat = req.body.latitude
       if(!notnullorblank(long) ){
-        throw 402
+        console.log("")
+        req.flash("errors", {"msg": "Must have latitude (or use google maps input form)"})
+        throw {"code": 402}
       }
       if(!notnullorblank(lat) ){
-        throw 402
+        req.flash("errors", {"msg": "Must have longitude (or use google maps input form)"})
+        throw {"code": 402}
+      }
+      if(!notnullorblank(req.body.address)) {
+        req.flash("errors", {"msg": "Must have display address. (or use google maps input form to autofill."})
+        throw {"code": 402}
+      }
+      if(!notnullorblank(req.body.name)) {
+        req.flash("errors", {"msg": "Must have display name."});
+        throw {"code": 402}
       }
       const coords = [
         // in MongoDB, type POINT has longitude first.
@@ -118,7 +129,7 @@ module.exports = {
         console.log('MongoDB storage: [%s, %s]', coords[0], coords[1]);
       }
       
-      let newPost;
+      let newHappyHome;
       if(req.file) {
         
         // Upload image to cloudinary
@@ -128,11 +139,13 @@ module.exports = {
           console.log("Cloudinary ID: %s", result.public_id);
           console.log("Cloudinary URL: %s", result.secure_url);
         }
-        newPost = await HappyHome.create({
+        // create new home
+        newHappyHome = await HappyHome.create({
           name: req.body.name,
           image: result.secure_url,
           cloudinaryId: result.public_id,
           address: req.body.address,
+          description: req.body.description,
           location: {
             type: 'Point',
             coordinates: coords
@@ -153,11 +166,13 @@ module.exports = {
           if(process.env.NODE_ENV === 'development') {
             console.log("No image provided...");
           }
-          newPost = await HappyHome.create({
+          // create new home
+          newHappyHome = await HappyHome.create({
             name: req.body.name,
             image: "",
             cloudinaryId: "",
             address: req.body.address,
+            description: req.body.description,
             location: {
               type: 'Point',
               coordinates: coords
@@ -175,9 +190,10 @@ module.exports = {
             }
           })
       }
-      console.log('Post has been added! Post ID: %s', newPost.id);
+      console.log('Home has been added! Home ID: %s', newHappyHome.id);
       res.redirect('/profile');
     } catch (err) {
+      console.log("Error creating new home. ")
       console.log(err);
       req.flash("errors", {msg: "Error handling form"})
       res.redirect('/profile')
@@ -192,16 +208,22 @@ module.exports = {
           $inc: { likes: 1 }, // and increment by 1
         }
       );
-      console.log('Likes +1');
+      if(process.env.NODE_ENV === 'development') {
+        console.log(`Likes +1 to Home ${req.params.id}`);
+      }
       res.redirect(`/happyHome/${req.params.id}`); // Redirect back to post page
     } catch (err) {
       console.log(err);
+      req.flash("errors", {msg: 'Could not like home'})
+      res.redirect(`/happyHome/${req.params.id}`)
     }
   },
   deleteHappyHome: async (req, res) => {
-    console.log("meow")
     const fetchID = req.params.id
-      console.log(fetchID);
+    // development logging
+    if(process.env.NODE_ENV === 'development') {
+      console.log("Attempting to delete Home %s", fetchID);
+    }
     try {
       
       // Find post by id
@@ -210,19 +232,25 @@ module.exports = {
       await cloudinary.uploader.destroy(happyHome.cloudinaryId);
       // Delete post from db
       await HappyHome.remove({ _id: fetchID });
-      console.log('Deleted Post');
+      console.log('Deleted Home %s', fetchID);
       res.redirect('/profile');
     } catch (err) {
+      req.flash("errors", {msg: "Could not delete home."})
       res.redirect('/profile');
     }
   },
+  // delete only image from database and cloudinary.
   deleteHappyHomeImage: async (req, res) => {
     const fetchID = req.params.id;
+    if(process.env.NODE_ENV === 'development') {
+      console.log("Attempting to delete Home %s...", fetchID)
+    }
     try {
+      // delete image in cloudinary
       let happyHome = await HappyHome.findById({_id: fetchID});
-
       await cloudinary.uploader.destroy(happyHome.cloudinaryId);
 
+      // update home in database to have image and cloudinaryid to be blank
       happyHome.image = ""
       happyHome.cloudinaryId = "";
       await HappyHome.updateOne({_id: fetchID}, 
@@ -233,28 +261,34 @@ module.exports = {
               cloudinaryId: ""
             }
       })
-      res.status(302).redirect(`/happyHome/${fetchID}`)
+      console.log("Image deleted from Home %s", fetchID)
+      res.redirect(`/happyHome/${fetchID}`)
     } catch(err) {
       console.log("Error occurred deleting only happy home image. Details: ");
       console.log(err);
+      req.flash("errors", {msg: "Could not delete image."})
       res.redirect(`/happyHome/${fetchID}`)
     }
   },
-  uploadHappyHomeImage: async (req, res) => {
-    res.redirect('/');
-  },
+  // load edit happy home page
   editHappyHome: async (req, res) => {
     const fetchID = req.params.id
-    console.log(fetchID);
+
+    if(process.env.NODE_ENV === 'development') {
+      console.log('Attempting to load edit page for home %s...', fetchID);
+    }
     try {
+      // fetch home details from mongodb
       let happyhome = await HappyHome.findById({ _id: fetchID });
-      console.log(happyhome);
+      // render it to user
       res.render("edithappyhome", {happyhome: happyhome})
     } catch(err) {
       console.log(err);
+      req.flash('errors', {msg: 'Could not load edit page'})
       res.redirect('/happyHome/' + req.params.id)
     }
   },
+  // actually edit home using user-provided details
   editHappyHomeWrite: async (req, res) => {
     const fetchID = req.params.id;
     console.log(req.file)
