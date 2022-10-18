@@ -102,21 +102,25 @@ module.exports = {
       // if no coorinates, throw error!
       let long = req.body.longitude,
           lat = req.body.latitude
+      let hasErrors = false;
       if(!notnullorblank(long) ){
         console.log("")
         req.flash("errors", {"msg": "Must have latitude (or use google maps input form)"})
-        throw {"code": 402}
+        hasErrors = true
       }
       if(!notnullorblank(lat) ){
         req.flash("errors", {"msg": "Must have longitude (or use google maps input form)"})
-        throw {"code": 402}
+        hasErrors = true
       }
       if(!notnullorblank(req.body.address)) {
-        req.flash("errors", {"msg": "Must have display address. (or use google maps input form to autofill."})
-        throw {"code": 402}
+        req.flash("errors", {"msg": "Must have display address (or use google maps input form to autofill)."})
+        hasErrors = true
       }
       if(!notnullorblank(req.body.name)) {
         req.flash("errors", {"msg": "Must have display name."});
+        hasErrors = true
+      }
+      if(hasErrors) {
         throw {"code": 402}
       }
       const coords = [
@@ -351,7 +355,7 @@ module.exports = {
           newOptions[option] = '';
         }
       })
-      
+
       if(newOptions !== {}) {
         newHappyHomeupdate.options = newOptions;
       }
