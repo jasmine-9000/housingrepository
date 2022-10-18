@@ -52,6 +52,13 @@
             <label for="address" class="form-label">Edit Display Address</h1>
             <input type="text" class="form-control" id="address" name="address" value="<%= happyhome.address %>">
         </div>
+        <div class="mb-3 flex flex-col">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control border-2 p-2 text-black" id="description" name="description" placeholder="Enter a description here...">
+                <%= happyhome.description %>
+            </textarea>
+            
+        </div>
         
         <% if(happyhome.image) { %>
             <h1 class="form-label">Edit Image</h1>

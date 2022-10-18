@@ -20,6 +20,18 @@ const HappyHomeOptions = [
   'lgbtqplusfriendly'
 ]
 
+const HappyHomeOptionsHTMLDict = {
+  'autismfriendly': 'Autism Friendly',
+  'dogfriendly': 'Dog Friendly',
+  'housingvouchers': 'Takes Housing Vouches',
+  'affordablehousing': 'Affordable Housing Units',
+  'consumerowned': 'Consumer-Owned/Controlled Setting',
+  'communitygarden': 'Has Community garden',
+  'petsallowed': 'Pets Allowed',
+  'videomonitoring': 'Video Monitoring',
+  'lgbtqplusfriendly': 'LGBTQ+ Friendly	\uD83C\uDF08'
+}
+
 module.exports = {
   // render user profile. 
   // include new home form inside. 
@@ -73,7 +85,8 @@ module.exports = {
         happyhome: happyhome,
         user: req.user,
         comments: comments,
-        happyhomeoptions: HappyHomeOptions
+        happyhomeoptions: HappyHomeOptions,
+        happyhomeoptionshtml: HappyHomeOptionsHTMLDict
       });
 
     } catch (err) {
@@ -96,7 +109,8 @@ module.exports = {
         happyhome: happyhome,
         user: {id: 0},
         comments: comments,
-        happyhomeoptions: HappyHomeOptions
+        happyhomeoptions: HappyHomeOptions,
+        happyhomeoptionshtml: HappyHomeOptionsHTMLDict
       });
     } catch (err) {
       console.log(err);
