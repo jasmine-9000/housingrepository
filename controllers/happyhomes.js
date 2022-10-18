@@ -51,8 +51,15 @@ module.exports = {
 
       // passport js ensures req.user is never null, otherwise it will redirect to index. 
       // find the home and comments made about the home.
-      const happyhome = await HappyHome.findById(req.params.id);
-      const comments = await Comment.find({ happyhome: req.params.id })
+      const fetchID = req.params.id;
+      if(fetchID.length !== 24 ) {
+        throw 404
+      }
+      const happyhome = await HappyHome.findById(fetchID);
+      if(happyhome === null) {
+        throw 404;
+      }
+      const comments = await Comment.find({ happyhome: fetchID })
         .populate('user', 'userName')
         .sort({ createdAt: 'desc' })
         .lean();
@@ -71,6 +78,9 @@ module.exports = {
 
     } catch (err) {
       console.log(err);
+      if(err === 404) {
+        res.render('errors/404');
+      }
     }
   },
   // same as getHappyHome, only user is null. 
