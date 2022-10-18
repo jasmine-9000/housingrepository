@@ -270,6 +270,7 @@ module.exports = {
       res.redirect(`/happyHome/${fetchID}`)
     }
   },
+
   // load edit happy home page
   editHappyHome: async (req, res) => {
     const fetchID = req.params.id
@@ -282,36 +283,52 @@ module.exports = {
       let happyhome = await HappyHome.findById({ _id: fetchID });
       // render it to user
       res.render("edithappyhome", {happyhome: happyhome})
+
     } catch(err) {
       console.log(err);
       req.flash('errors', {msg: 'Could not load edit page'})
       res.redirect('/happyHome/' + req.params.id)
     }
   },
+
   // actually edit home using user-provided details
   editHappyHomeWrite: async (req, res) => {
     const fetchID = req.params.id;
-    console.log(req.file)
-    // console.log(req.body);
+    if(process.env.NODE_ENV === 'development') {
+      console.log("Attempting to modify home %s...", fetchID)
+      console.log("File path: %s", req.file);
+    }
+    
+    // cloudinary upload results stored here. 
+    // lets us have a choice if we're going to update image or not.
     let result;
     try {
+      // find home in mongodb. 
       const happyHome = await HappyHome.findById({_id: fetchID})
-      // console.log(happyHome)
+      if(process.env.NODE_ENV === 'development') {
+        console.log("Old home details: ")
+        console.log(happyHome)
+      }
+
+      // list things to update in mongodb 
       let newHappyHomeupdate = {}
       
       // do new image here
       if(req.file) {
+          // upload new cloudinary update .
           result = await cloudinary.uploader.upload(req.file.path);
-          console.log("Cloudinary Upload Result: ")
-          console.log(result);
-          if(notnullorblank(happyHome.image) && notnullorblank(happyHome.cloudinaryId) ) {
-              await cloudinary.uploader.destroy(happyHome.cloudinaryId); // you don't need to remove image src and id from database since we will be replacing them anyways. 
+          if(process.env.NODE_ENV === 'development') {
+            console.log("Cloudinary Upload Result: ")
+            console.log(result);
           }
+          // if there was a an old image, destroy it.
+          if(notnullorblank(happyHome.image) && notnullorblank(happyHome.cloudinaryId) ) {
+              await cloudinary.uploader.destroy(happyHome.cloudinaryId); 
+              // you don't need to remove image src and id from database since we will be replacing them anyways. 
+          }
+          // add them to the list of things to update in mongodb. 
           newHappyHomeupdate.image = result.secure_url;
           newHappyHomeupdate.cloudinaryId = result.public_id;
-
-          // image: result.secure_url,
-            // cloudinaryId: result.public_id
       }
       
       // do location here
@@ -334,14 +351,14 @@ module.exports = {
           newOptions[option] = '';
         }
       })
-
+      
       if(newOptions !== {}) {
         newHappyHomeupdate.options = newOptions;
       }
 
       // console.log(happyHome);
       // do all others here
-      const allOthers = ['name', 'address']
+      const allOthers = ['name', 'address', 'description']
       for(key of allOthers) {
           console.log("Key: %s, Value: %s", key, happyHome[key]);
           console.log("Key: %s, Value: %s", key, req.body[key]);
@@ -368,6 +385,8 @@ module.exports = {
     }
   } 
 }
+
+// utiltity functions
 function notnullorblank(item) {
   if(item === "" || item === null) return false;
   return true 
