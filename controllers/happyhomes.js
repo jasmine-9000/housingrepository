@@ -6,6 +6,8 @@ const Comment = require('../models/Comment');
 // create MongoDB indices
 HappyHome.createIndexes({location: "2dsphere"})
 
+// list all options for homes here.
+// example: autism friendly, takes housing vouchers.
 const HappyHomeOptions = [
   'autismfriendly',
   'dogfriendly',
@@ -17,34 +19,49 @@ const HappyHomeOptions = [
   'videomonitoring',
   'lgbtqplusfriendly'
 ]
+
 module.exports = {
   // render user profile. 
+  // include new home form inside. 
   getProfile: async (req, res) => {
     try {
+      // passport js ensures req.user is never null, otherwise it will redirect to index. 
+      // find all homes submitted by current user .
       const happyHomes = await HappyHome.find({ user: req.user.id });
-      console.log(typeof happyHomes)
-      console.log(happyHomes)
-      if(happyHomes == [] || happyHomes == {} || happyHomes == null) {
-        throw 404
+      if(process.env.NODE_ENV === 'development') {
+        console.log(happyHomes)
       }
-      res.render('profile.ejs', { happyHomes: happyHomes, user: req.user, googlemapsgeocodingAPIkey: process.env.GOOGLEMAPS_GEOCODING_API_KEY});
+      // render user profile with new home form. 
+      res.render('profile.ejs', { happyHomes: happyHomes, user: req.user});
     } catch (err) {
+      // log errors to console in both production and development. 
       console.log(err);
       
-      res.render('errors/404.ejs');
+      if(err === 404) {
+        res.render('errors/404.ejs');
+
+      } else {
+        res.render('errors/503.ejs')
+      }
     }
   },
+  // render single home.
   getHappyHome: async (req, res) => {
     try {
+
+      // passport js ensures req.user is never null, otherwise it will redirect to index. 
+      // find the home and comments made about the home.
       const happyhome = await HappyHome.findById(req.params.id);
       const comments = await Comment.find({ happyhome: req.params.id })
         .populate('user', 'userName')
         .sort({ createdAt: 'desc' })
         .lean();
+
+      // only in development, log out comments. 
       if(process.env.NODE_ENV === 'development') {
         console.log(comments);
       }
-        
+      // render the home. 
       res.render('happyhome.ejs', {
         happyhome: happyhome,
         user: req.user,
@@ -56,10 +73,10 @@ module.exports = {
       console.log(err);
     }
   },
+  // same as getHappyHome, only user is null. 
   getHappyHomeNoAuth: async (req, res) => {
     try {
       const happyhome = await HappyHome.findById(req.params.id);
-      
       const comments = await Comment.find({ happyhome: req.params.id })
         .populate('user', 'userName')
         .sort({ createdAt: 'desc' })
@@ -75,19 +92,43 @@ module.exports = {
       console.log(err);
     }
   },
+  // add new home to database.
   createHappyHome: async (req, res) => {
     try {
+      // passport js ensures req.user is never null, otherwise it will redirect to index. 
+
+
+      // parse coordinates from request body
+      // if no coorinates, throw error!
+      let long = req.body.longitude,
+          lat = req.body.latitude
+      if(!notnullorblank(long) ){
+        throw 402
+      }
+      if(!notnullorblank(lat) ){
+        throw 402
+      }
       const coords = [
         // in MongoDB, type POINT has longitude first.
-        req.body.longitude,
-        req.body.latitude
+        long,
+        lat
       ]
+      if(process.env.NODE_ENV === 'developement') {
+        console.log('Latitude and Longitude: [%s, %s]', coords[1], coords[0]);
+        console.log('MongoDB storage: [%s, %s]', coords[0], coords[1]);
+      }
+      
+      let newPost;
       if(req.file) {
         
         // Upload image to cloudinary
         const result = await cloudinary.uploader.upload(req.file.path);
-        
-        await HappyHome.create({
+        if(process.env.NODE_ENV === 'development') {
+          console.log("Image uploaded.");
+          console.log("Cloudinary ID: %s", result.public_id);
+          console.log("Cloudinary URL: %s", result.secure_url);
+        }
+        newPost = await HappyHome.create({
           name: req.body.name,
           image: result.secure_url,
           cloudinaryId: result.public_id,
@@ -96,10 +137,6 @@ module.exports = {
             type: 'Point',
             coordinates: coords
           },
-          /*
-          latitude: req.body.latitude,
-          longitude: req.body.longitude,
-          */
           likes: 0,
           user: req.user.id,
           options: {
@@ -113,18 +150,14 @@ module.exports = {
           }
         })
       } else {
-          console.log("No image provided...");
-          console.log("[Latitude, Longitude]: ")
-          console.log(coords)
-          await HappyHome.create({
+          if(process.env.NODE_ENV === 'development') {
+            console.log("No image provided...");
+          }
+          newPost = await HappyHome.create({
             name: req.body.name,
             image: "",
             cloudinaryId: "",
             address: req.body.address,
-            /*
-            latitude: req.body.latitude,
-            longitude: req.body.longitude,
-            */
             location: {
               type: 'Point',
               coordinates: coords
@@ -142,11 +175,12 @@ module.exports = {
             }
           })
       }
-      console.log('Post has been added!');
+      console.log('Post has been added! Post ID: %s', newPost.id);
       res.redirect('/profile');
     } catch (err) {
       console.log(err);
-      res.send("Error handling form...")
+      req.flash("errors", {msg: "Error handling form"})
+      res.redirect('/profile')
     }
   },
   likeHappyHome: async (req, res) => {

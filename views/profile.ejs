@@ -1,5 +1,15 @@
 <%- include('partials/header') -%>
 <div class="container mx-auto">
+  <% if (locals.messages.errors) { %>
+      <% messages.errors.forEach( el => { %>
+          <div class="alert alert-danger"><%= el.msg %></div>
+      <% }) %>    
+  <% } %>
+  <% if (locals.messages.info) { %>
+      <% messages.info.forEach( el => { %>
+          <div class="alert alert-info"><%= el.msg %></div>
+      <% }) %>    
+  <% } %>
   <div id="toast-container"></div>
   <div class="row mt-5">
       <div class="col-6">
@@ -10,7 +20,7 @@
           </div>
           <div class="mt-5">
             <h2 class="dark:text-white text-2xl">Add a Home</h2>
-            <%- include('partials/addnewhomeform', {googlemapsgeocodingAPIkey: googlemapsgeocodingAPIkey}) -%>
+            <%- include('partials/addnewhomeform', {}) -%>
           </div>
       </div>
       <div class="dark:text-white col-6 mt-5">
