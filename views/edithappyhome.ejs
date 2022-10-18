@@ -1,6 +1,17 @@
 <%- include('partials/header') -%>
 <div class="container md:mx-auto md:my-auto dark:text-white p-2">
+    
     <div id="toast-container"></div>
+    <% if (locals.messages.errors) { %>
+        <% messages.errors.forEach( el => { %>
+            <div class="alert alert-danger"><%= el.msg %></div>
+        <% }) %>    
+    <% } %>
+    <% if (locals.messages.info) { %>
+        <% messages.info.forEach( el => { %>
+            <div class="alert alert-info"><%= el.msg %></div>
+        <% }) %>    
+    <% } %>
     <h1 class="text-3xl mb-10">Edit Home</h1>
     <% if (happyhome.image) { %>
     <button onclick="deleteImage()" class="btn btn-blue">Delete image</button>

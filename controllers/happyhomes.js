@@ -307,6 +307,34 @@ module.exports = {
     // lets us have a choice if we're going to update image or not.
     let result;
     try {
+
+
+      // parse coordinates from request body
+      // if no coorinates, throw error!
+      let long = req.body.longitude,
+          lat = req.body.latitude
+      let hasErrors = false;
+      if(!notnullorblank(long) ){
+        console.log("")
+        req.flash("errors", {"msg": "Must have latitude (or use google maps input form)"})
+        hasErrors = true
+      }
+      if(!notnullorblank(lat) ){
+        req.flash("errors", {"msg": "Must have longitude (or use google maps input form)"})
+        hasErrors = true
+      }
+      if(!notnullorblank(req.body.address)) {
+        req.flash("errors", {"msg": "Must have display address (or use google maps input form to autofill)."})
+        hasErrors = true
+      }
+      if(!notnullorblank(req.body.name)) {
+        req.flash("errors", {"msg": "Must have display name."});
+        hasErrors = true
+      }
+      if(hasErrors) {
+        throw {"code": 402}
+      }
+
       // find home in mongodb. 
       const happyHome = await HappyHome.findById({_id: fetchID})
       if(process.env.NODE_ENV === 'development') {
@@ -338,8 +366,8 @@ module.exports = {
       // do location here
       const newCoords = [
         // in MongoDB, type POINT has longitude first.
-        req.body.longitude,
-        req.body.latitude
+        long,
+        lat
       ]
       if(happyHome.location.coordinates !== newCoords) {
         newHappyHomeupdate.location = {
@@ -384,8 +412,8 @@ module.exports = {
     }
     catch (err) {
       console.log(err);
-      // await cloudinary.destroy(result.public_id) // (doesn't work) destroy cloudinary image if url is not saved to database properly. 
-      res.redirect(`/happyHome/${fetchID}`)
+      // await cloudinary.destroy(result.public_id) // (doesn't work) destroy cloudinary image if url is not saved to database properly.
+      res.redirect(`/happyHome/editHappyHome/${fetchID}`)
     }
   } 
 }
