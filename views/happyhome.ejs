@@ -2,6 +2,7 @@
 <% /* if (!('id' in user)) { user.id = 0} */ %> 
 <script src="/js/comment.js" defer></script>
 <div class="container mx-auto p-2">
+  <div id="toast-container"></div>
   <div class="dark:text-white mt-2 md:mt-5">
       <h2 class="text-3xl"><%= happyhome.name %></h2>
       <img class="object-cover" src="<%= happyhome.image%>" />
@@ -112,5 +113,6 @@
     </div>
   </div>
 </div>
+<script src="/js/toast.js"></script>
 
 <%- include('partials/footer') -%>

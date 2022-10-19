@@ -1,5 +1,6 @@
 const Post = require('../models/HappyHome');
 const Comment = require('../models/Comment');
+const { node } = require('webpack');
 
 module.exports = {
   createComment: async (req, res) => {
@@ -34,7 +35,31 @@ module.exports = {
       console.log(err);
     }
   },
-
+  editComment: async (req, res) => {
+    const fetchID = req.params.id;
+    if(process.env.NODE_ENV === 'development') {
+      console.log("Attempting to edit comment %s...", fetchID)
+    }
+    try {
+      const newtext = req.body.newtext; 
+      console.log(req.body);
+      console.log(req.body.newtext);
+      await Comment.findOneAndUpdate(
+        // find post to update by ID,
+        { _id: req.params.id },
+        {
+          $set: {
+            comment: newtext
+          }
+        }
+      );
+      res.json({status: 'SUCCESS', status_code: 200, message: 'Successfully edited comment in database.'});
+    } catch(err) {
+      console.log('Could not edit comment.');
+      console.log(err)
+      res.json({status: 'FAILURE', status_code: err.code, message: err})
+    }
+  },
   deleteComment: async (req, res) => {
     try {
       // Find post by id
