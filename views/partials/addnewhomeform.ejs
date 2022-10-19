@@ -25,7 +25,7 @@
     <h1 class="text-2xl">OR</h1>
     <div class="mb-3 relative">
         <label for="googlemapsgeocoder" class="form-label">Google Maps Address Lookup</label>
-        <input type="text" class="form-control" id="googlemapsgeocoder" name="googlemapsgeocoder" onblur="geocode(this.value)">
+        <input type="text" class="form-control" id="googlemapsgeocoder" name="googlemapsgeocoder" oninput="delayedGeocode(this.value)">
         <!-- <button id="addaddress" class="btn btn-blue">Add Address</button> -->
         <ul id="googlemapsaddresses" class="absolute hidden "> <!-- hidden on initial load-->
         </ul>

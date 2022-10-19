@@ -1,4 +1,26 @@
+let delayedGeocodeTimeout = null;
+// called oninput. on every character. 
+// will be delayed by a second to give the user time to input.
+// if user types another character, cancel the previous one. 
+// example: 
+// user types 'a'.
+// delayedGeocode('a') is called.
+// next, user types 'd'
+// delayedGeocode('ad') is called.
+// geocode('a') is cancelled, 
+// geocode('ad') is called.
+function delayedGeocode(e) {
+    console.log("meow")
+    if(delayedGeocodeTimeout) {
+        
+        clearTimeout(delayedGeocodeTimeout)
+    }
+    delayedGeocodeTimeout = setTimeout(geocode, 1000, e)   
+}
+
 function geocode(e) {
+    delayedGeocodeTimeout = null; // reset timeout on delayedGeoCode
+    clearaddresses();
     e = e.trim(' '); // trim whitespace on input. no blank searches plz.
     console.log(e);
     if(e === '') return; // search cannot be blank.
