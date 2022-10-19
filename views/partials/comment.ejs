@@ -15,7 +15,7 @@
 </span>
 <br>
 <div class="meta">
-    <span class="text-xs">left by <%= comment.user.userName %>
+    <span class="text-xs">left by <%= comment.user.userName %> at <%= comment.createdAt.toLocaleDateString('en-us', {year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "numeric"}) %><% if(comment.createdAt !== comment.modifiedAt) { %>, edited at <%= comment.modifiedAt.toLocaleDateString('en-us',  {year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "numeric"}) %>.<% }%>
         <!-- only display delete button if comment creator is current user. -->
         <% if (String(comment.user._id) === String(user._id))  { %>
         <% /* match value but not type. they are of different types. */ %> 

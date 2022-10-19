@@ -49,7 +49,8 @@ module.exports = {
         { _id: req.params.id },
         {
           $set: {
-            comment: newtext
+            comment: newtext,
+            modifiedAt: Date.now()
           }
         }
       );

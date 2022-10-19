@@ -422,6 +422,11 @@ module.exports = {
             newHappyHomeupdate[key] = req.body[key]
           }
       }
+      
+      // modified date
+      newHappyHomeupdate['modifiedAt'] = Date.now();
+
+      
       console.log("Values to update: ")
       console.log(newHappyHomeupdate)
       await HappyHome.findOneAndUpdate({_id: fetchID}, 

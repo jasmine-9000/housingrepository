@@ -51,6 +51,10 @@ const HomeSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  modifiedAt: {
+    type: Date, 
+    default: Date.now
+  },
   comment: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment',
