@@ -28,7 +28,7 @@
                         if(response.redirected) {
                             window.location.href = response.url;
                         } else {
-                            throw "Could not redirect page."
+                            throw {msg: "Could not redirect page."} 
                         }
                     })
                     .catch(err => {
