@@ -109,7 +109,10 @@
       <% } %>
     </div>
     <div class="col-6 mt-5 mb-5">
+      <% if(user.id !== 0) { %>
       <a class="btn btn-blue" href="/profile">Return to Profile</a>
+      <% } %> 
+      <a class="btn btn-blue" href="/maps">Back to Maps</a>
     </div>
   </div>
 </div>
