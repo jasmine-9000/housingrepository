@@ -21,6 +21,9 @@
     .btn-blue:hover {
         @apply bg-blue-700
     }
+    .btn-small {
+        @apply py-0 px-0 pt-0 pb-0 pr-0 pl-0
+    }
 
     .btn .btn-inline {
         @apply px-0 px-0 inline

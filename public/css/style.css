@@ -610,6 +610,13 @@ html {
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
+.btn-small {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
 .btn .btn-inline {
   display: inline;
   padding-left: 0px;
@@ -1032,6 +1039,10 @@ html {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .flex-col {
