@@ -84,10 +84,12 @@ exports.postSignup = (req, res, next) => {
     gmail_remove_dots: false,
   });
 
+  let ipaddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const user = new User({
     userName: req.body.userName,
     email: req.body.email,
     password: req.body.password,
+    ipaddress: ipaddress
   });
 
   User.findOne(
