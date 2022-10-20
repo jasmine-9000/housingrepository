@@ -27,4 +27,9 @@ const CommentSchema = new mongoose.Schema({
   }
 });
 
+CommentSchema.pre('save', function(next, doc) {
+  console.log("From CommentSchema pre:")
+  console.log(doc);
+  next();
+})
 module.exports = mongoose.model('Comment', CommentSchema);
