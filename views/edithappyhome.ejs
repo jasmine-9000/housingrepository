@@ -1,4 +1,5 @@
 <%- include('partials/header') -%>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <div class="container md:mx-auto md:my-auto dark:text-white p-2">
     
     <div id="toast-container"></div>
@@ -41,7 +42,7 @@
     </script>
     <% } %>
 
-    <form class="mb-5" action="/happyHome/editHappyHomeWrite/<%= happyhome.id %>?_method=PUT" method="POST"  enctype='multipart/form-data'>
+    <form class="mb-5" method="POST" enctype='multipart/form-data' id="editForm" data-id="<%= happyhome.id %>">
         <div class="mb-5">
 
             <label for="name" class="form-label">Edit Name</h1>
@@ -52,11 +53,23 @@
             <label for="address" class="form-label">Edit Display Address</h1>
             <input type="text" class="form-control" id="address" name="address" value="<%= happyhome.address %>">
         </div>
-        <div class="mb-3 flex flex-col">
+        <h1 class="text-2xl">Description</h1>
+        <div class="dark:bg-white dark:text-black" id="quill-container-mine">
+
+            <!-- Create the toolbar container -->
+            <div id="toolbar">
+            </div>
+            
+            <!-- Create the editor container -->
+            <div id="editor">
+                <%- happyhome.description %>
+            </div>
+          </div>
+        <!-- <div class="mb-3 flex flex-col">
             <label for="description" class="form-label">Description</label>
             <textarea class="form-control border-2 p-2 text-black" id="description" name="description" placeholder="Enter a description here..."><%= happyhome.description %></textarea>
             
-        </div>
+        </div> -->
         
         <% if(happyhome.image) { %>
             <h1 class="form-label">Edit Image</h1>
@@ -100,6 +113,73 @@
         <button type="submit" class="btn btn-blue">Save Changes</button>
     </form>    
 </div>
+<!-- Include the Quill library -->
+<script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+<script>
+    var toolbarOptions = {
+        handlers: {
+        'link': function(value) {
+            if(value) {
+            var href = prompt('Enter the URL');
+            this.quill.format('link', href);
+            } else {
+            this.quill.format('link', false)
+            }
+        }
+        }
+        // 'bold': default, 'italic', 'underline', 'strike', 'link'
+    }
+    var editor = new Quill('#editor', {
+        modules: { 
+        toolbar: toolbarOptions 
+        },
+        placeholder: 'Add description here...',
+        theme: 'snow'
+    });
+    document.getElementById('editForm').addEventListener('submit', editFormSubmit)
+
+    function editFormSubmit(e) {
+        console.log(e.target.dataset.id);
+        let id = e.target.dataset.id;
+        e.preventDefault();
+        let fileElement = document.querySelector('#imageUpload');
+        let file = fileElement.files[0];
+        let formData = new FormData();
+
+        formData.append('file', file);
+        let formNames = ['name', 'address', 'latitude', 'longitude'];
+        for(const id of formNames) {
+        formData.append(id, document.getElementById(id).value)
+        }
+        formData.append('description', editor.root.innerHTML);
+        let formOptionsCheckboxes = [
+        'autismfriendly',
+        'dogfriendly',
+        'housingvouchers',
+        'affordablehousing',
+        'consumerowned',
+        'communitygarden',
+        'petsallowed',
+        'videomonitoring',
+        'lgbtqplusfriendly'
+        ]
+        for(const id of formOptionsCheckboxes) {
+        formData.append(id, document.getElementById(id).checked)
+        }
+        // formData.set('name', document.querySelector('#name'))
+        console.log(formData);
+        for(const key of formData.keys()) {
+        console.log(key)
+        console.log(formData.get(key))
+        }
+        const request = new XMLHttpRequest();
+        request.open("PUT", `/happyHome/editHappyHomeWrite/${id}`)
+        request.send(formData);
+        console.log(window.location.hostname)
+        window.location.href = `/happyHome/${id}`;
+    }
+     // action="/happyHome/editHappyHomeWrite/<%= happyhome.id %>?_method=PUT"
+</script>
 <script src="/js/toast.js"></script>
 <script src="/js/geocode.js" defer></script>
 
